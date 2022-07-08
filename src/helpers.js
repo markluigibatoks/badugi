@@ -34,8 +34,8 @@ function createCardObject (currentTile){
   const textureFront = getTextureFromSprite(currentTile, 13, 5, 'cards-sprite.gif')
   const textureBack = getTextureFromSprite(52, 13, 5, 'cards-sprite.gif')
 
-  const materialFront = new THREE.MeshStandardMaterial({map: textureFront, color: 0xffffff, side: THREE.FrontSide})
-  const materialBack = new THREE.MeshStandardMaterial({map: textureBack, color: 0xffffff, side: THREE.BackSide})
+  const materialFront = new THREE.MeshBasicMaterial({map: textureFront, color: 0xffffff, side: THREE.FrontSide})
+  const materialBack = new THREE.MeshBasicMaterial({map: textureBack, color: 0xffffff, side: THREE.BackSide})
 
   const card = new THREE.Group()
 
@@ -50,7 +50,7 @@ function createCardObject (currentTile){
 
 function createCardOutline (){
   let geometryOutline = new THREE.PlaneGeometry( 0.55, 0.75, 1, 1 )
-  let materialOutline = new THREE.MeshStandardMaterial({color: 0x049ef4, side: THREE.DoubleSide})
+  let materialOutline = new THREE.MeshBasicMaterial({color: 0x049ef4, side: THREE.DoubleSide})
   let mesh = new THREE.Mesh( geometryOutline, materialOutline )
   mesh.position.z = -0.0001
   mesh.visible = false
