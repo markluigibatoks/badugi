@@ -48,4 +48,14 @@ function createCardObject (currentTile){
   return card
 }
 
-export { getTextureFromSprite, createCardObject }
+function createCardOutline (){
+  let geometryOutline = new THREE.PlaneGeometry( 0.55, 0.75, 1, 1 )
+  let materialOutline = new THREE.MeshStandardMaterial({color: 0x049ef4, side: THREE.DoubleSide})
+  let mesh = new THREE.Mesh( geometryOutline, materialOutline )
+  mesh.position.z = -0.0001
+  mesh.visible = false
+
+  return mesh
+}
+
+export { createCardOutline, getTextureFromSprite, createCardObject }

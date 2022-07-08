@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
 import gsap from 'gsap'
 
-import {createCardObject} from './helpers'
+import {createCardObject, createCardOutline} from './helpers'
 
 // Debug
 const gui = new dat.GUI()
@@ -19,7 +19,6 @@ const scene = new THREE.Scene()
 
 // TODO: 
 const mainUserCards = [8,9,10,11,12]
-
 const objectsToDetect = []
 
 for(let n in mainUserCards) {
@@ -29,11 +28,7 @@ for(let n in mainUserCards) {
     let card = createCardObject(mainUserCards[n])
     objectsToDetect.push(card)
 
-    let geometryOutline = new THREE.PlaneGeometry( 0.55, 0.75, 1, 1 )
-    let materialOutline = new THREE.MeshStandardMaterial({color: 0x049ef4, side: THREE.DoubleSide})
-    let mesh3 = new THREE.Mesh( geometryOutline, materialOutline )
-    mesh3.position.z = -0.0001
-    mesh3.visible = false
+    let cardOutline = createCardOutline()
 
     let cardGroup = new THREE.Group()
 
@@ -41,12 +36,10 @@ for(let n in mainUserCards) {
     cardGroup.position.z = Zgap * n
 
     cardGroup.add(card)
-    cardGroup.add(mesh3)
+    cardGroup.add(cardOutline)
 
     scene.add(cardGroup)
 }
-
-
 
 // Lights
 
@@ -144,12 +137,6 @@ const camera = new THREE.PerspectiveCamera(45, sizes.width / sizes.height, 0.1, 
 camera.position.x = 0
 camera.position.y = 0
 camera.position.z = 8
-
-// Ortographic Camera
-// const width = 3
-// const height = 3
-// const camera = new THREE.OrthographicCamera( width / - 2, width / 2, height / 2, height / - 2, 0, 1000 );
-// scene.add( camera );
 
 // const helper = new THREE.CameraHelper( camera );
 // scene.add( helper );
