@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
 import gsap from 'gsap'
 
-import {createCardObject, createCardOutline} from './helpers'
+import {createCardObject, createCardOutline, distributeCards} from './helpers'
 
 // Debug
 const gui = new dat.GUI()
@@ -17,8 +17,9 @@ const scene = new THREE.Scene()
 
 // Objects
 
-// TODO: Add a User beside the Cards
-const mainUserCards = [8,9,10,11,12] //[8,9,10,11,12]
+const player = new THREE.Group()
+
+const mainUserCards = [8,9,10,11,12]
 const objectsToDetect = []
 
 const cardsToAnimate = []
@@ -36,60 +37,40 @@ for(let n in mainUserCards) {
 
     cardGroup.position.x = Xgap * n
     cardGroup.position.y = 4
-    cardGroup.position.z = Zgap * n
 
     cardGroup.rotation.z = -4
-    cardGroup.rotation.y = -3.21
+    cardGroup.rotation.y = 3.21
 
     cardGroup.add(cardObject)
     cardGroup.add(cardOutline)
 
-
     cardsToAnimate.push(cardGroup)
 
-    scene.add(cardGroup)
+    player.add(cardGroup)
 }
 
-for(let n of cardsToAnimate) {
-    gsap.to(n.rotation, {
-        z: 0,
-        duration: 0.8
-    })
-    gsap.to(n.position, {
-        y: 0,
-        duration: 0.8
-    })
-    gsap.to(n.rotation, {
-        y: 0,
-        duration: 0.3,
-        delay: 0.8
-    })
-}
-
-
+const playerImage = new THREE.Group()
 
 const geometry1 = new THREE.CircleGeometry( 0.24, 32 );
 const material1 = new THREE.MeshStandardMaterial( { color: 0xaaaaaa, side: THREE.DoubleSide } );
 const circle = new THREE.Mesh( geometry1, material1 );
 circle.position.x = -0.7
 circle.position.z = 0.001
-scene.add( circle );
+playerImage.add( circle );
 
 const geometry2 = new THREE.CircleGeometry( 0.28, 32 );
 const material2 = new THREE.MeshStandardMaterial( { color: 0x0000ff, side: THREE.DoubleSide } );
 const circle1 = new THREE.Mesh( geometry2, material2 );
 circle1.position.x = -0.7
-scene.add( circle1 );
+playerImage.add( circle1 );
 
-const shape = new THREE.Shape();
+player.add(playerImage)
 
-shape.moveTo(-0.1, 0.1);
-shape.lineTo(0.08, 0.07);
-shape.lineTo(0.1, -0.1);
+scene.add(player)
 
 // Lights
 
-const pointLight = new THREE.PointLight(0xffffff, 1.4)
+const pointLight = new THREE.AmbientLight(0xffffff, 1.4)
 pointLight.position.x = 2
 pointLight.position.y = 3
 pointLight.position.z = 4
@@ -184,14 +165,12 @@ camera.position.x = 0
 camera.position.y = 0
 camera.position.z = 4
 
-console.log(sizes.width / sizes.height)
-
-const helper = new THREE.CameraHelper( camera );
-scene.add( helper );
+// const helper = new THREE.CameraHelper( camera );
+// scene.add( helper );
 
 // Controls
-const controls = new OrbitControls(camera, canvas)
-controls.enableDamping = true
+// const controls = new OrbitControls(camera, canvas)
+// controls.enableDamping = true
 
 /**
  * Renderer
@@ -208,9 +187,9 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2) )
  * Animate
  */
 
+distributeCards (cardsToAnimate)
+
 const clock = new THREE.Clock()
-
-
 
 const tick = () =>
 {
@@ -229,8 +208,3 @@ const tick = () =>
 }
 
 tick()
-
-// TODO: Animate Cards inig hatag sa Dealer sa cards
-// Rotate Z
-// Move ang position Y from dealer
-// Rotate Y para mag flip

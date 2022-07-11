@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import gsap from 'gsap'
 
 /**
  * 
@@ -58,4 +59,35 @@ function createCardOutline (){
   return mesh
 }
 
-export { createCardOutline, getTextureFromSprite, createCardObject }
+function distributeCards (cardsToAnimate){
+  const time = Math.round(Date.now() / 1000)
+
+  setInterval (() => {
+      let currentTime = Math.round(Date.now() / 1000) - time
+  
+      if(currentTime <= cardsToAnimate.length) {
+  
+          gsap.to(cardsToAnimate[currentTime - 1].rotation, {
+              z: 0,
+              duration: 0.4
+          })
+          gsap.to(cardsToAnimate[currentTime - 1].position, {
+              y: 0,
+              duration: 0.4
+          })
+          gsap.to(cardsToAnimate[currentTime - 1].position, {
+              z: 0.009 * currentTime,
+              duration: 0.1,
+          })
+          gsap.to(cardsToAnimate[currentTime - 1].rotation, {
+              y: 0,
+              duration: 0.1,
+              delay: 1
+          })
+      } else {
+          clearInterval()
+      }
+  }, 1000)
+}
+
+export { createCardOutline, getTextureFromSprite, createCardObject, distributeCards }
