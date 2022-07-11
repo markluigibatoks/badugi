@@ -9,12 +9,12 @@ export class Player {
       return this.createCardObject(x)
     }) : this.enemy()
 
-    this.cardGroup = this.cardObjects.map((card,index) => {
+    this.cardGroup = this.cardObjects.map((card) => {
       let cardOutline = this.createCardOutline()
 
       let cardGroup = new THREE.Group()
 
-      cardGroup.position.x = 0.20 * index
+      cardGroup.position.x = 0
       cardGroup.position.y = 4
 
       cardGroup.rotation.z = -4
@@ -35,8 +35,8 @@ export class Player {
     // // Materials
     const textureBack = getTextureFromSprite(52, 13, 5, 'cards-sprite.gif')
 
-    const materialFront = new THREE.MeshBasicMaterial({color: 0xffffff, side: THREE.FrontSide})
-    const materialBack = new THREE.MeshBasicMaterial({map: textureBack, color: 0xffffff, side: THREE.BackSide})
+    const materialFront = new THREE.MeshStandardMaterial({color: 0xffffff, side: THREE.FrontSide})
+    const materialBack = new THREE.MeshStandardMaterial({map: textureBack, color: 0xffffff, side: THREE.BackSide})
     
     if(currentTile){
       const textureFront = getTextureFromSprite(currentTile, 13, 5, 'cards-sprite.gif')
@@ -56,7 +56,7 @@ export class Player {
   
   createCardOutline (){
     let geometryOutline = new THREE.PlaneGeometry( 0.55, 0.75, 1, 1 )
-    let materialOutline = new THREE.MeshBasicMaterial({color: 0x049ef4, side: THREE.DoubleSide})
+    let materialOutline = new THREE.MeshStandardMaterial({color: 0x049ef4, side: THREE.DoubleSide})
     let mesh = new THREE.Mesh( geometryOutline, materialOutline )
     mesh.position.z = -0.0001
     mesh.visible = false
@@ -68,7 +68,7 @@ export class Player {
     const playerImage = new THREE.Group()
 
     const geometry = new THREE.CircleGeometry( 0.24, 32 );
-    const material = new THREE.MeshBasicMaterial( { color: 0xaaaaaa, side: THREE.DoubleSide } );
+    const material = new THREE.MeshStandardMaterial( { color: 0xaaaaaa, side: THREE.DoubleSide } );
     const circle = new THREE.Mesh( geometry, material );
     circle.position.x = -0.7
     circle.position.z = 0.001
@@ -76,7 +76,7 @@ export class Player {
 
     //TODO: Change this code to texture
     const geometry2 = new THREE.CircleGeometry( 0.28, 32 );
-    const material2 = new THREE.MeshBasicMaterial( { color: 0x0000ff, side: THREE.DoubleSide } );
+    const material2 = new THREE.MeshStandardMaterial( { color: 0x0000ff, side: THREE.DoubleSide } );
     const circle2 = new THREE.Mesh( geometry2, material2 );
     circle2.position.x = -0.7
     playerImage.add( circle2 );

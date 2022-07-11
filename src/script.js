@@ -157,6 +157,9 @@ function onMouseDown(){
 
 window.addEventListener('mousedown', onMouseDown )
 
+const light = new THREE.AmbientLight( 0xffffff, 1 );
+scene.add( light );
+
 /**
  * Camera
  */
@@ -192,12 +195,12 @@ const tick = () =>
             delay: (count * 0.05)
         })
         gsap.to(cardsToAnimate[count].position, {
-            x: 0,
+            x: playerPosition[count % playerPosition.length].x + (count/playerPosition.length * 0.20),
             duration: 0.4,
             delay: (count * 0.05)
         })
         gsap.to(cardsToAnimate[count].position, {
-            y: 0,
+            y: playerPosition[count % playerPosition.length].y,
             duration: 0.4,
             delay: (count * 0.05)
         })
@@ -226,6 +229,4 @@ const tick = () =>
 
 tick()
 
-// TODO: FIX CARD POSITION
-// TODO: ADD DISTRIBUTECARD ANIMATION TO HELPER
-// TODO: 
+// TODO: ALIGN CARD POSITION
