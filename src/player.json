@@ -1,0 +1,21 @@
+{
+  "player1": {
+    "image": "pathToImage",
+    "cards": [
+      8,9,10,11
+    ]
+  },
+  "player2": {
+    "image": "pathToImage"
+  },
+  "player3": {
+    "image": "pathToImage"
+  },
+  "player4": {
+    "image": "pathToImage"
+  },
+  "player5": {
+    "image": "pathToImage"
+  }
+}
+  

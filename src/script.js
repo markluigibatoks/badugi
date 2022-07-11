@@ -3,8 +3,10 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
 import gsap from 'gsap'
+import playerJson from './player.json'
+import { Player } from './player'
 
-import {createCardObject, createCardOutline, distributeCards} from './helpers'
+import { distributeCards} from './helpers'
 
 // Debug
 const gui = new dat.GUI()
@@ -15,66 +17,66 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
+const playerPosition = [
+    {
+        x: 0,
+        y: 0
+    },
+    {
+        x: -3,
+        y: 1
+    },
+    {
+        x: 3,
+        y: 1
+    },
+    {
+        x: -3,
+        y: 2
+    },
+    {
+        x: 3,
+        y: 2
+    },
+]
+
 // Objects
-
-const player = new THREE.Group()
-
-const mainUserCards = [8,9,10,11,12]
+const cardsPerPlayer = 4;
+const players = []
 const objectsToDetect = []
-
 const cardsToAnimate = []
 
-for(let n in mainUserCards) {
-    const Xgap = 0.15
-    const Zgap = 0.001
+// Init Player Class
+Object.values(playerJson).map(x => {
+    players.push(new Player(x.image, x.cards))
+})
 
-    let cardObject = createCardObject(mainUserCards[n])
-    objectsToDetect.push(cardObject)
+objectsToDetect.push(...players[0].cardObjects)
 
-    let cardOutline = createCardOutline()
-
-    let cardGroup = new THREE.Group()
-
-    cardGroup.position.x = Xgap * n
-    cardGroup.position.y = 4
-
-    cardGroup.rotation.z = -4
-    cardGroup.rotation.y = 3.21
-
-    cardGroup.add(cardObject)
-    cardGroup.add(cardOutline)
-
-    cardsToAnimate.push(cardGroup)
-
-    player.add(cardGroup)
+for(let i = 0; i < cardsPerPlayer; i ++) {
+    for(let j = 0; j < players.length; j ++){
+        cardsToAnimate.push(players[j].cardGroup[i])
+    }
 }
 
-const playerImage = new THREE.Group()
+/**
+ * Init table
+ */
+players.forEach( (x, index) => {
 
-const geometry1 = new THREE.CircleGeometry( 0.24, 32 );
-const material1 = new THREE.MeshStandardMaterial( { color: 0xaaaaaa, side: THREE.DoubleSide } );
-const circle = new THREE.Mesh( geometry1, material1 );
-circle.position.x = -0.7
-circle.position.z = 0.001
-playerImage.add( circle );
+    const player = new THREE.Group()
+    
+    player.add(x.image)
 
-const geometry2 = new THREE.CircleGeometry( 0.28, 32 );
-const material2 = new THREE.MeshStandardMaterial( { color: 0x0000ff, side: THREE.DoubleSide } );
-const circle1 = new THREE.Mesh( geometry2, material2 );
-circle1.position.x = -0.7
-playerImage.add( circle1 );
+    x.cardGroup.forEach(y => {
+        scene.add(y)
+    })
+    
+    scene.add(player)
+    player.position.x = playerPosition[index].x
+    player.position.y = playerPosition[index].y
+})
 
-player.add(playerImage)
-
-scene.add(player)
-
-// Lights
-
-const pointLight = new THREE.AmbientLight(0xffffff, 1.4)
-pointLight.position.x = 2
-pointLight.position.y = 3
-pointLight.position.z = 4
-scene.add(pointLight)
 
 /**
  * Sizes
@@ -125,8 +127,7 @@ function onMouseDown(){
     // Toggle Selected state of Card
     if(intersects.length){
 
-        // if the card is in active state/ is selected state 
-        // then animate card to the original Y position
+        // toggle Y axis of card group
         if(intersects[0].object.parent.parent.position.y ){
 
             gsap.to(intersects[0].object.parent.parent.position, {
@@ -165,13 +166,6 @@ camera.position.x = 0
 camera.position.y = 0
 camera.position.z = 4
 
-// const helper = new THREE.CameraHelper( camera );
-// scene.add( helper );
-
-// Controls
-// const controls = new OrbitControls(camera, canvas)
-// controls.enableDamping = true
-
 /**
  * Renderer
  */
@@ -187,18 +181,41 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2) )
  * Animate
  */
 
-distributeCards (cardsToAnimate)
-
-const clock = new THREE.Clock()
+let count = 0;
 
 const tick = () =>
 {
-    const elapsedTime = clock.getElapsedTime()
-    // Update objects
-    // objectsToDetect[0].rotation.y = .5 * elapsedTime
+    if(count < cardsToAnimate.length){
+        gsap.to(cardsToAnimate[count].rotation, {
+            z: 0,
+            duration: 0.4,
+            delay: (count * 0.05)
+        })
+        gsap.to(cardsToAnimate[count].position, {
+            x: 0,
+            duration: 0.4,
+            delay: (count * 0.05)
+        })
+        gsap.to(cardsToAnimate[count].position, {
+            y: 0,
+            duration: 0.4,
+            delay: (count * 0.05)
+        })
+        gsap.to(cardsToAnimate[count].position, {
+            z: 0.001 * count,
+            duration: 0.1,
+            delay: (count * 0.05)
+        })
+        if(count % players.length == 0){
+            gsap.to(cardsToAnimate[count].rotation, {
+                y: 0,
+                duration: 0.1,
+                delay: 0.4 + (count * 0.1)
+            })
+        }
+    }
 
-    // Update Orbital Controls
-    // controls.update()
+    count ++
 
     // Render
     renderer.render(scene, camera)
@@ -208,3 +225,7 @@ const tick = () =>
 }
 
 tick()
+
+// TODO: FIX CARD POSITION
+// TODO: ADD DISTRIBUTECARD ANIMATION TO HELPER
+// TODO: 
