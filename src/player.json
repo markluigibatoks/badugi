@@ -1,21 +1,21 @@
 {
   "player1": {
-    "image": "pathToImage",
+    "image": "dummy1.jpg",
     "cards": [
       8,9,10,11
     ]
   },
   "player2": {
-    "image": "pathToImage"
+    "image": "dummy2.png"
   },
   "player3": {
-    "image": "pathToImage"
+    "image": "dummy3.jpg"
   },
   "player4": {
-    "image": "pathToImage"
+    "image": "dummy4.jpg"
   },
   "player5": {
-    "image": "pathToImage"
+    "image": "dummy5.jpg"
   }
 }
   

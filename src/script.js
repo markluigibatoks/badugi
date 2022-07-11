@@ -6,7 +6,7 @@ import gsap from 'gsap'
 import playerJson from './player.json'
 import { Player } from './player'
 
-import { distributeCards} from './helpers'
+import { distributeCard } from './helpers'
 
 // Debug
 const gui = new dat.GUI()
@@ -189,33 +189,7 @@ let count = 0;
 const tick = () =>
 {
     if(count < cardsToAnimate.length){
-        gsap.to(cardsToAnimate[count].rotation, {
-            z: 0,
-            duration: 0.4,
-            delay: (count * 0.05)
-        })
-        gsap.to(cardsToAnimate[count].position, {
-            x: playerPosition[count % playerPosition.length].x + (count/playerPosition.length * 0.20),
-            duration: 0.4,
-            delay: (count * 0.05)
-        })
-        gsap.to(cardsToAnimate[count].position, {
-            y: playerPosition[count % playerPosition.length].y,
-            duration: 0.4,
-            delay: (count * 0.05)
-        })
-        gsap.to(cardsToAnimate[count].position, {
-            z: 0.001 * count,
-            duration: 0.1,
-            delay: (count * 0.05)
-        })
-        if(count % players.length == 0){
-            gsap.to(cardsToAnimate[count].rotation, {
-                y: 0,
-                duration: 0.1,
-                delay: 0.4 + (count * 0.1)
-            })
-        }
+        distributeCard(cardsToAnimate[count], count, playerPosition.length, playerPosition[count % playerPosition.length].x + (count/playerPosition.length * 0.20), playerPosition[count % playerPosition.length].y)
     }
 
     count ++

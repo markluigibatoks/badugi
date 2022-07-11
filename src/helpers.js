@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import gsap from 'gsap'
 
 /**
  * 
@@ -25,4 +26,35 @@ function getTextureFromSprite (currentTile, tilesX, tilesY, staticSrc) {
   return map
 }
 
-export {getTextureFromSprite }
+function distributeCard (card, count = 0, length = 5, x, y) {
+  gsap.to(card.rotation, {
+    z: 0,
+    duration: 0.4,
+    delay: (count * 0.05)
+  })
+  gsap.to(card.position, {
+      x: x,
+      duration: 0.4,
+      delay: (count * 0.05)
+  })
+  gsap.to(card.position, {
+      y: y,
+      duration: 0.4,
+      delay: (count * 0.05)
+  })
+  gsap.to(card.position, {
+      z: 0.001 * count,
+      duration: 0.1,
+      delay: (count * 0.05)
+  })
+  if(count % length == 0){
+      gsap.to(card.rotation, {
+          y: 0,
+          duration: 0.1,
+          delay: 0.4 + (count * 0.1)
+      })
+  }
+}
+
+
+export {getTextureFromSprite, distributeCard }
