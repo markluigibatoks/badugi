@@ -38,27 +38,48 @@ const scene = new THREE.Scene()
 scene.background = new THREE.Color(0x005B13)
 
 const gameSettings = {
-    playerPosition: [{
-        x: 0,
-        y: 0
-    },
-    {
-        x: -3,
-        y: 1
-    },
-    {
-        x: 3,
-        y: 1
-    },
-    {
-        x: -3,
-        y: 2
-    },
-    {
-        x: 3,
-        y: 2
-    }]
+    playerPosition: [
+        { x: 0,  y: 0 },
+        { x: -3, y: 1 },
+        { x: 3, y: 1 },
+        { x: -3, y: 2 },
+        { x: 3, y: 2 }
+    ],
+    cardPosition: [
+        [
+            { x: 0, y: 0 },
+            { x: 0.2, y: 0 },
+            { x: 0.4, y: 0 },
+            { x: 0.6000000000000001, y: 0 },
+        ],
+        [
+            { x: -2.96, y: 1 },
+            { x: -2.76, y: 1 },
+            { x: -2.56, y: 1 },
+            { x: -2.36, y: 1 },
+        ],
+        [
+            { x: 3.08, y: 1 },
+            { x: 3.28, y: 1 },
+            { x: 3.48, y: 1 },
+            { x: 3.68, y: 1 },
+        ],
+        [
+            { x: -2.88, y: 2 },
+            { x: -2.6799999999999997, y: 2 },
+            { x: -2.48, y: 2 },
+            { x: -2.28, y: 2 },
+        ],
+        [
+            { x: 3.16, y: 2 },
+            { x: 3.36, y: 2 },
+            { x: 3.56, y: 2 },
+            { x: 3.76, y: 2 },
+        ]
+    ]
 }
+
+console.log(gameSettings.cardPosition)
 
 // Objects
 const cardsPerPlayer = 4;
@@ -241,7 +262,7 @@ let count = 0;
 
 const tick = () =>
 {
-    if(count < cardsOnHand.length){
+    if(count < players.length * cardsPerPlayer){
         distributeCard(cardsOnHand[count], count, gameSettings.playerPosition.length, gameSettings.playerPosition[count % gameSettings.playerPosition.length].x + (count/gameSettings.playerPosition.length * 0.20), gameSettings.playerPosition[count % gameSettings.playerPosition.length].y)
     }
 
@@ -257,3 +278,4 @@ const tick = () =>
 tick()
 
 // TODO: ALIGN CARD POSITION
+// TODO: REFACTOR DISTRIBUTE CARD
