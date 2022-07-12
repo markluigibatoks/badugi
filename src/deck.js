@@ -134,7 +134,8 @@ function location (suit, value) {
       J: 48,
       Q: 49,
       K: 50
-    })
+    }),
+    joker: 52
   })
 } 
 

@@ -55,5 +55,4 @@ function distributeCard (card, count = 0, length = 5, x, y) {
   }
 }
 
-
 export {getTextureFromSprite, distributeCard }
