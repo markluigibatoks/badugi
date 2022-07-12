@@ -64,7 +64,7 @@ const playerPosition = [
 const cardsPerPlayer = 4;
 const players = []
 const objectsToDetect = []
-const cardsToAnimate = []
+const cardsOnHand = []
 
 // Init Player Class
 Object.values(playerJson).map(x => {
@@ -75,7 +75,7 @@ objectsToDetect.push(...players[0].cardObjects)
 
 for(let i = 0; i < cardsPerPlayer; i ++) {
     for(let j = 0; j < players.length; j ++){
-        cardsToAnimate.push(players[j].cardGroup[i])
+        cardsOnHand.push(players[j].cardGroup[i])
     }
 }
 
@@ -208,8 +208,8 @@ let count = 0;
 
 const tick = () =>
 {
-    if(count < cardsToAnimate.length){
-        distributeCard(cardsToAnimate[count], count, playerPosition.length, playerPosition[count % playerPosition.length].x + (count/playerPosition.length * 0.20), playerPosition[count % playerPosition.length].y)
+    if(count < cardsOnHand.length){
+        distributeCard(cardsOnHand[count], count, playerPosition.length, playerPosition[count % playerPosition.length].x + (count/playerPosition.length * 0.20), playerPosition[count % playerPosition.length].y)
     }
 
     count ++
