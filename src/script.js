@@ -4,7 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
 import gsap from 'gsap'
 import playerJson from './player.json'
-import { Player } from './player'
+import Player from './player'
 
 import { distributeCard } from './helpers'
 
@@ -35,10 +35,10 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const sceneMap = new THREE.TextureLoader(loadingManager).load('poker-table2.png')
 const scene = new THREE.Scene()
-scene.background = sceneMap
+scene.background = new THREE.Color(0x005B13)
 
-const playerPosition = [
-    {
+const gameSettings = {
+    playerPosition: [{
         x: 0,
         y: 0
     },
@@ -57,8 +57,8 @@ const playerPosition = [
     {
         x: 3,
         y: 2
-    },
-]
+    }]
+}
 
 // Objects
 const cardsPerPlayer = 4;
@@ -68,14 +68,16 @@ const cardsOnHand = []
 
 // Init Player Class
 Object.values(playerJson).map(x => {
-    players.push(new Player(x.image, x.cards))
+    players.push(new Player(x.image, x.deck))
 })
 
-objectsToDetect.push(...players[0].cardObjects)
+// Add Card Content to ObjectsToDetect for Raycasting
+players[0].deck.cards.forEach(x => objectsToDetect.push(x.item))
 
+// For Dealer animation
 for(let i = 0; i < cardsPerPlayer; i ++) {
     for(let j = 0; j < players.length; j ++){
-        cardsOnHand.push(players[j].cardGroup[i])
+        cardsOnHand.push(players[j].deck.cards[i].mesh)
     }
 }
 
@@ -88,13 +90,13 @@ players.forEach( (x, index) => {
     
     player.add(x.image)
 
-    x.cardGroup.forEach(y => {
-        scene.add(y)
+    x.deck.cards.forEach(y => {
+        scene.add(y.mesh)
     })
     
     scene.add(player)
-    player.position.x = playerPosition[index].x
-    player.position.y = playerPosition[index].y
+    player.position.x = gameSettings.playerPosition[index].x
+    player.position.y = gameSettings.playerPosition[index].y
 })
 
 
@@ -143,11 +145,10 @@ function onMouseDown(){
     raycaster.setFromCamera( pointer, camera );
     const intersects = raycaster.intersectObjects( objectsToDetect, true );
 
-
     // Toggle Selected state of Card
     if(intersects.length){
-
         // toggle Y axis of card group
+        // show outline of card
         if(intersects[0].object.parent.parent.position.y ){
 
             gsap.to(intersects[0].object.parent.parent.position, {
@@ -209,7 +210,7 @@ let count = 0;
 const tick = () =>
 {
     if(count < cardsOnHand.length){
-        distributeCard(cardsOnHand[count], count, playerPosition.length, playerPosition[count % playerPosition.length].x + (count/playerPosition.length * 0.20), playerPosition[count % playerPosition.length].y)
+        distributeCard(cardsOnHand[count], count, gameSettings.playerPosition.length, gameSettings.playerPosition[count % gameSettings.playerPosition.length].x + (count/gameSettings.playerPosition.length * 0.20), gameSettings.playerPosition[count % gameSettings.playerPosition.length].y)
     }
 
     count ++

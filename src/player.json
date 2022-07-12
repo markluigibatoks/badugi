@@ -1,21 +1,108 @@
 {
   "player1": {
     "image": "dummy1.jpg",
-    "cards": [
-      0,1,2,3
+    "deck": [
+      {
+        "suit": "diamond",
+        "value": "A"
+      },
+      {
+        "suit": "heart",
+        "value": "2"
+      },
+      {
+        "suit": "clove",
+        "value": "3"
+      },
+      {
+        "suit": "spade",
+        "value": "4"
+      }
     ]
   },
   "player2": {
-    "image": ""
+    "image": "",
+    "deck": [
+      {
+        "suit": "diamond",
+        "value": "A"
+      },
+      {
+        "suit": "heart",
+        "value": "2"
+      },
+      {
+        "suit": "clove",
+        "value": "3"
+      },
+      {
+        "suit": "spade",
+        "value": "4"
+      }
+    ]
   },
   "player3": {
-    "image": ""
+    "image": "",
+    "deck": [
+      {
+        "suit": "diamond",
+        "value": "A"
+      },
+      {
+        "suit": "heart",
+        "value": "2"
+      },
+      {
+        "suit": "clove",
+        "value": "3"
+      },
+      {
+        "suit": "spade",
+        "value": "4"
+      }
+    ]
   },
   "player4": {
-    "image": ""
+    "image": "",
+    "deck": [
+      {
+        "suit": "diamond",
+        "value": "A"
+      },
+      {
+        "suit": "heart",
+        "value": "2"
+      },
+      {
+        "suit": "clove",
+        "value": "3"
+      },
+      {
+        "suit": "spade",
+        "value": "4"
+      }
+    ]
   },
   "player5": {
-    "image": ""
+    "image": "",
+    "deck": [
+      {
+        "suit": "diamond",
+        "value": "A"
+      },
+      {
+        "suit": "heart",
+        "value": "2"
+      },
+      {
+        "suit": "clove",
+        "value": "3"
+      },
+      {
+        "suit": "spade",
+        "value": "4"
+      }
+    ]
   }
 }
   

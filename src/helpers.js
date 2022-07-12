@@ -11,14 +11,13 @@ import gsap from 'gsap'
  */
 
   // Return a Texture from the given Sprite
-function getTextureFromSprite (currentTile, tilesX, tilesY, staticSrc) {
-
+function getTextureFromSprite (tile, tilesX, tilesY, staticSrc) {
   const map = new THREE.TextureLoader().load(staticSrc)
   map.magFilter = THREE.NearestFilter
   map.repeat.set(1/tilesX, 1/tilesY)
 
-  const offsetX = (currentTile % tilesX) / tilesX
-  const offsetY = (tilesY - Math.floor(currentTile / tilesX) - 1) / tilesY
+  const offsetX = (tile % tilesX) / tilesX
+  const offsetY = (tilesY - Math.floor(tile / tilesX) - 1) / tilesY
 
   map.offset.x = offsetX
   map.offset.y = offsetY
