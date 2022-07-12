@@ -66,9 +66,41 @@ const players = []
 const objectsToDetect = []
 const cardsOnHand = []
 
+const enemyDeck = [
+    {
+        "suit": "joker",
+        "value": "joker"
+    },
+    {
+        "suit": "joker",
+        "value": "joker"
+    },
+    {
+        "suit": "joker",
+        "value": "joker"
+    },
+    {
+        "suit": "joker",
+        "value": "joker"
+    },
+    {
+        "suit": "joker",
+        "value": "joker"
+    },
+]
+
 // Init Player Class
 Object.values(playerJson).map(x => {
-    players.push(new Player(x.image, x.deck))
+
+    let deck = []
+    if(!x.deck){
+        // Probably an enemy :D
+        deck.push(...enemyDeck)
+    }else {
+        deck.push(...x.deck)
+    }
+
+    players.push(new Player(x.image, deck))
 })
 
 // Add Card Content to ObjectsToDetect for Raycasting

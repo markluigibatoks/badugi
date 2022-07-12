@@ -21,88 +21,16 @@
     ]
   },
   "player2": {
-    "image": "",
-    "deck": [
-      {
-        "suit": "diamond",
-        "value": "A"
-      },
-      {
-        "suit": "heart",
-        "value": "2"
-      },
-      {
-        "suit": "clove",
-        "value": "3"
-      },
-      {
-        "suit": "spade",
-        "value": "4"
-      }
-    ]
+    "image": ""
   },
   "player3": {
-    "image": "",
-    "deck": [
-      {
-        "suit": "diamond",
-        "value": "A"
-      },
-      {
-        "suit": "heart",
-        "value": "2"
-      },
-      {
-        "suit": "clove",
-        "value": "3"
-      },
-      {
-        "suit": "spade",
-        "value": "4"
-      }
-    ]
+    "image": ""
   },
   "player4": {
-    "image": "",
-    "deck": [
-      {
-        "suit": "diamond",
-        "value": "A"
-      },
-      {
-        "suit": "heart",
-        "value": "2"
-      },
-      {
-        "suit": "clove",
-        "value": "3"
-      },
-      {
-        "suit": "spade",
-        "value": "4"
-      }
-    ]
+    "image": ""
   },
   "player5": {
-    "image": "",
-    "deck": [
-      {
-        "suit": "diamond",
-        "value": "A"
-      },
-      {
-        "suit": "heart",
-        "value": "2"
-      },
-      {
-        "suit": "clove",
-        "value": "3"
-      },
-      {
-        "suit": "spade",
-        "value": "4"
-      }
-    ]
+    "image": ""
   }
 }
   
