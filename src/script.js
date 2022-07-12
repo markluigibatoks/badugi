@@ -8,6 +8,24 @@ import { Player } from './player'
 
 import { distributeCard } from './helpers'
 
+// loading manager
+const progressBox = document.getElementsByClassName('progress')[0]
+const progressElement = document.getElementById('progress')
+const loadingManager = new THREE.LoadingManager()
+
+loadingManager.onStart = () => {
+    progressElement.value = 0
+}
+
+loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
+    let loaded = Math.round(itemsLoaded/itemsTotal) * 100
+    progressElement.value = loaded
+}
+
+loadingManager.onLoad = function ( ) {
+	progressBox.style.display = 'none'
+};
+
 // Debug
 const gui = new dat.GUI()
 
@@ -15,7 +33,7 @@ const gui = new dat.GUI()
 const canvas = document.querySelector('canvas.webgl')
 
 // Scene
-const sceneMap = new THREE.TextureLoader().load('poker-table2.png')
+const sceneMap = new THREE.TextureLoader(loadingManager).load('poker-table2.png')
 const scene = new THREE.Scene()
 scene.background = sceneMap
 

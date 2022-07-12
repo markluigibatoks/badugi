@@ -2,7 +2,7 @@
   "player1": {
     "image": "dummy1.jpg",
     "cards": [
-      8,9,10,11
+      0,1,2,3
     ]
   },
   "player2": {

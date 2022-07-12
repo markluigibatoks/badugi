@@ -27,7 +27,7 @@ export class Player {
     })
   }
 
-  createCardObject (currentTile){
+  createCardObject (currentTile = 0){
     // Objects
     const geometryFront = new THREE.PlaneGeometry( 0.5, 0.7, 1, 1 )
     const geometryBack = new THREE.PlaneGeometry( 0.5, 0.7, 1, 1 )
@@ -37,8 +37,8 @@ export class Player {
 
     const materialFront = new THREE.MeshStandardMaterial({color: 0xffffff, side: THREE.FrontSide})
     const materialBack = new THREE.MeshStandardMaterial({map: textureBack, color: 0xffffff, side: THREE.BackSide})
-    
-    if(currentTile){
+
+    if(!(currentTile < 0)){
       const textureFront = getTextureFromSprite(currentTile, 13, 5, 'cards-sprite.gif')
       materialFront.map = textureFront
     }

@@ -18,3 +18,18 @@ body
     left: 0;
     outline: none;
 }
+
+.progress {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%);
+    left: 50%;
+    z-index: 9999!important;
+}
+
+.progress label {
+    font-size: 32px;
+    font-weight: 500;
+    display: block;
+    text-align: center;
+}
