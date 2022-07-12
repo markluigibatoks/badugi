@@ -15,7 +15,9 @@ const gui = new dat.GUI()
 const canvas = document.querySelector('canvas.webgl')
 
 // Scene
+const sceneMap = new THREE.TextureLoader().load('poker-table2.png')
 const scene = new THREE.Scene()
+scene.background = sceneMap
 
 const playerPosition = [
     {

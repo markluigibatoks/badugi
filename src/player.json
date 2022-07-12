@@ -6,16 +6,16 @@
     ]
   },
   "player2": {
-    "image": "dummy2.png"
+    "image": ""
   },
   "player3": {
-    "image": "dummy3.jpg"
+    "image": ""
   },
   "player4": {
-    "image": "dummy4.jpg"
+    "image": ""
   },
   "player5": {
-    "image": "dummy5.jpg"
+    "image": ""
   }
 }
   
