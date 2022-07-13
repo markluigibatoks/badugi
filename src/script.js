@@ -166,7 +166,7 @@ const tick = () =>
         initGUI(players, camera)
         isSorted = true
     } else if(sortCount < players[0].deck.cards.length) {
-        console.log(sortCount)
+
         setTimeout(() => {
             if(sortCount < 4) {
                 let card = players[0].deck.cards[sortCount].mesh
@@ -178,6 +178,7 @@ const tick = () =>
 
             sortCount ++
         }, 2000)
+        
     }
         
     // Render
