@@ -21,7 +21,6 @@ scene.background = new THREE.Color(0x005B13)
 
 
 // Objects
-const cardsPerPlayer = 4;
 const players = []
 const objectsToDetect = []
 
@@ -172,7 +171,7 @@ let index = 0;
 let length = players.length
 const tick = () =>
 {
-    if(count < players.length * cardsPerPlayer){
+    if(count < players.length * gameSettings.cardsPerPlayer){
 
         let card = players[count % players.length].deck.cards[index].mesh
         let x = gameSettings.cardPosition[count % players.length][index].x
