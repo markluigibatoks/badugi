@@ -9,29 +9,13 @@ import Player from './player'
 
 import { dealerCardAnimation } from './helpers'
 
-// loading manager
-const progressBox = document.getElementsByClassName('progress')[0]
-const progressElement = document.getElementById('progress')
-const loadingManager = new THREE.LoadingManager()
-
-loadingManager.onStart = () => {
-    progressElement.value = 0
-}
-
-loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
-    let loaded = Math.round(itemsLoaded/itemsTotal) * 100
-    progressElement.value = loaded
-}
-
-loadingManager.onLoad = function ( ) {
-	progressBox.style.display = 'none'
-}
+const textures = initTextures()
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
 // Scene
-const sceneMap = new THREE.TextureLoader(loadingManager).load('poker-table2.png')
+const sceneMap = textures.sceneMap
 const scene = new THREE.Scene()
 scene.background = new THREE.Color(0x005B13)
 
@@ -52,7 +36,7 @@ Object.values(playerJson).map(x => {
         deck.push(...x.deck)
     }
 
-    players.push(new Player(x.image, deck))
+    players.push(new Player(x.image, deck, textures))
 })
 
 // Add Card Content to ObjectsToDetect for Raycasting
@@ -163,9 +147,9 @@ scene.add( light );
  */
 // Base camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
-camera.position.x = 0
-camera.position.y = 0
-camera.position.z = 4
+camera.position.x = gameSettings.cameraPosition.x
+camera.position.y = gameSettings.cameraPosition.y
+camera.position.z = gameSettings.cameraPosition.z
 
 /**
  * Renderer
@@ -211,8 +195,6 @@ const tick = () =>
 
 tick()
 
-// TODO: ALIGN CARD POSITION
-
 // Debug
 const gui = new dat.GUI()
 
@@ -232,3 +214,47 @@ cameraFolder.add(camera.position, 'x', 0, 4, 0.001)
 cameraFolder.add(camera.position, 'y', 0, 4, 0.001)
 cameraFolder.add(camera.position, 'z', 0, 4, 0.001)
 
+
+function initTextures () {
+    const textures = {}
+    const progressBox = document.getElementsByClassName('progress')[0]
+    const progressElement = document.getElementById('progress')
+    const loadingManager = new THREE.LoadingManager()
+    const textureLoader = new THREE.TextureLoader(loadingManager)
+
+    loadingManager.onStart = () => {
+        progressElement.value = 0
+    }
+
+    loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
+        let loaded = Math.round(itemsLoaded/itemsTotal) * 100
+        progressElement.value = loaded
+    }
+
+    loadingManager.onLoad = function ( ) {
+        progressBox.style.display = 'none'
+    }
+
+
+    textures.sceneMap = textureLoader.load('poker-table2.png')
+
+    const getKey = (key, obj) => obj[key]
+
+    for(let i = 0; i < 4; i ++) {
+        for (let j = 1; j <= 13; j ++) {
+
+            let s = getKey(gameSettings.suits[i], {
+                heart: 'h',
+                diamond: 'd',
+                clove: 'c',
+                spade: 's'
+            })
+            textures[`${s}${j}`] = textureLoader.load(`cards/${s}${j}.png`)
+        }
+    }
+
+    textures.cardFold = textureLoader.load('cards/cards-back.png')
+    textures.joker = textureLoader.load('cards/joker.png')
+
+    return textures
+}

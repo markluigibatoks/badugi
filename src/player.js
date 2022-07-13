@@ -1,20 +1,21 @@
 import * as THREE from 'three'
 import Deck from './deck'
+import gameSettings from './gameSettings.json'
 
 export default class Player {
-  constructor(image, deck) {
+  constructor(image, deck, textures) {
 
     this.image = createUserObject(image)
 
-    this.deck = new Deck(deck)
+    this.deck = new Deck(deck, textures)
 
     this.deck.cards = this.deck.cards.map((card) => {
 
-      card.mesh.position.x = 0
-      card.mesh.position.y = 4
+      card.mesh.position.x = gameSettings.dealer.position.x
+      card.mesh.position.y = gameSettings.dealer.position.y
 
-      card.mesh.rotation.z = -4
-      card.mesh.rotation.y = 3.21
+      card.mesh.rotation.y = gameSettings.dealer.rotation.y
+      card.mesh.rotation.z = gameSettings.dealer.rotation.z
 
       return card
     })

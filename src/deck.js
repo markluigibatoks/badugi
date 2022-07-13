@@ -7,16 +7,16 @@ const VALUES = [
 ]
 
 export default class Deck {
-  constructor (cards) {
-    this.cards = loadCards(cards)
+  constructor (cards, textures) {
+    this.cards = loadCards(cards, textures)
   }
 }
 
 class Card {
-  constructor (suit = 'joker', value = 53) {
+  constructor (suit = 'joker', value = 'joker', textures) {
     this.suit = suit
     this.value = value
-    this.item = item(this.suit, this.value)
+    this.item = item(suit, value, textures)
     this.outline = outline()
     this.mesh = createCard(this.item, this.outline)
   }
@@ -30,14 +30,14 @@ function createCard (item, outline){
   return card
 }
 
-function item (suit, value) {
+function item (suit, value, textures) {
   // Objects
   const geometryFront = new THREE.PlaneGeometry( 0.5, 0.7, 1, 1 )
   const geometryBack = new THREE.PlaneGeometry( 0.5, 0.7, 1, 1 )
 
   // // Materials
-  const textureBack = getTextureFromSprite(52, 13, 5, 'cards-sprite.gif')
-  const textureFront = getTextureFromSprite(location(suit, value), 13, 5, 'cards-sprite.gif')
+  const textureBack = textures.cardFold
+  const textureFront = getTexture(suit, value, textures)
 
   const materialBack = new THREE.MeshStandardMaterial({map: textureBack, color: 0xffffff, side: THREE.BackSide})
   const materialFront = new THREE.MeshStandardMaterial({map: textureFront, color: 0xffffff, side: THREE.FrontSide})
@@ -67,75 +67,40 @@ function outline () {
   return mesh
 }
 
-function loadCards (cards) {
-  return cards.map(x => new Card(x.suit, x.value))
+function loadCards (cards, textures) {
+  return cards.map(x => new Card(x.suit, x.value, textures))
 }
 
-function location (suit, value) {
-  const getKey = (key, obj) => obj[key]
+function getTexture (suit, value, textures) {
+  if(suit === 'joker' || value === 'joker') {
+    return textures.joker
+  }
 
-  return getKey(suit, {
-    heart: getKey(value, {
-      A: 12,
-      2: 0,
-      3: 1,
-      4: 2,
-      5: 3,
-      6: 4,
-      7: 5,
-      8: 6,
-      9: 7,
-      10: 8,
-      J: 9,
-      Q: 10,
-      K: 11,
-    }),
-    diamond: getKey(value, {
-      A: 25,
-      2: 13,
-      3: 14,
-      4: 15,
-      5: 16,
-      6: 17,
-      7: 18,
-      8: 19,
-      9: 20,
-      10: 21,
-      J: 22,
-      Q: 23,
-      K: 24
-    }),
-    clove: getKey(value, {
-      A: 38,
-      2: 26,
-      3: 27,
-      4: 28,
-      5: 29,
-      6: 30,
-      7: 31,
-      8: 32,
-      9: 33,
-      10: 34,
-      J: 35,
-      Q: 36,
-      K: 37
-    }),
-    spade: getKey(value, {
-      A: 51,
-      2: 39,
-      3: 40,
-      4: 41,
-      5: 42,
-      6: 43,
-      7: 44,
-      8: 45,
-      9: 46,
-      10: 47,
-      J: 48,
-      Q: 49,
-      K: 50
-    }),
-    joker: 52
+  const getKey = (key, obj) => obj[key]
+  
+  let s = getKey(suit, {
+      heart: 'h',
+      diamond: 'd',
+      clove: 'c',
+      spade: 's'
   })
-} 
+
+  let v = getKey(value, {
+    A: 1,
+    2: 2,
+    3: 3,
+    4: 4,
+    5: 5,
+    6: 6,
+    7: 7,
+    8: 8,
+    9: 9,
+    10: 10,
+    J: 11,
+    Q: 12,
+    K: 13,
+  })
+
+  return textures[`${s}${v}`]
+}
 

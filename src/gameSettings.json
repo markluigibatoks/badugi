@@ -1,4 +1,16 @@
 {
+    "dealer": {
+        "position": {
+            "x": 0,
+            "y": 5,
+            "z": 0
+        },
+        "rotation": {
+            "x": 0,
+            "y": 3.21,
+            "z": -4
+        }
+    },
     "playerPosition": [
         { "x": 0,  "y": 0 },
         { "x": -3, "y": 1 },
@@ -38,6 +50,11 @@
             { "x": 3.678, "y": 2 }
         ]
     ],
+    "cameraPosition": {
+        "x": 0,
+        "y": 1.001,
+        "z": 4
+    },
     "enemyDeck": [
         {
             "suit": "joker",
@@ -55,5 +72,8 @@
             "suit": "joker",
             "value": "joker"
         }
+    ],
+    "suits": [
+        "heart", "diamond", "clove", "spade"
     ]
   }
