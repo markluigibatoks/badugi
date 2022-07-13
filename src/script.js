@@ -7,7 +7,7 @@ import playerJson from './player.json'
 import gameSettings from './gameSettings.json'
 import Player from './player'
 
-import { dealerCardAnimation, toggleCard } from './helpers'
+import { dealerCardAnimation, toggleCard, initTextures, getCardIndexFromDeck } from './helpers'
 
 const textures = initTextures()
 
@@ -106,8 +106,8 @@ function onMouseDown(){
 
     // Toggle Selected state of Card
     if(intersects.length){
-        let card = getCard(intersects[0].object.parent.parent.id)
-        toggleCard(card.item, card.y)
+        let cardIndex = getCardIndexFromDeck(intersects[0].object.parent.parent.id, players[0].deck.cards)
+        toggleCard(players[0].deck.cards[cardIndex], gameSettings.cardPosition[0][cardIndex].y)
     }
 }
 
@@ -189,64 +189,3 @@ cameraFolder.add(camera.position, 'x', 0, 4, 0.0001)
 cameraFolder.add(camera.position, 'y', 0, 4, 0.0001)
 cameraFolder.add(camera.position, 'z', 0, 4, 0.0001)
 
-
-function initTextures () {
-    const textures = {}
-    const progressBox = document.getElementsByClassName('progress')[0]
-    const progressElement = document.getElementById('progress')
-    const loadingManager = new THREE.LoadingManager()
-    const textureLoader = new THREE.TextureLoader(loadingManager)
-
-    loadingManager.onStart = () => {
-        progressElement.value = 0
-    }
-
-    loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
-        let loaded = Math.round(itemsLoaded/itemsTotal) * 100
-        progressElement.value = loaded
-    }
-
-    loadingManager.onLoad = function ( ) {
-        progressBox.style.display = 'none'
-    }
-
-
-    textures.sceneMap = textureLoader.load('poker-table2.png')
-
-    const getKey = (key, obj) => obj[key]
-
-    for(let i = 0; i < 4; i ++) {
-        for (let j = 1; j <= 13; j ++) {
-
-            let s = getKey(gameSettings.suits[i], {
-                heart: 'h',
-                diamond: 'd',
-                clove: 'c',
-                spade: 's'
-            })
-            textures[`${s}${j}`] = textureLoader.load(`cards/${s}${j}.png`)
-        }
-    }
-
-    textures.cardFold = textureLoader.load('cards/cards-back.png')
-    textures.joker = textureLoader.load('cards/joker.png')
-
-    return textures
-}
-
-function getCard (id) {
-    let cards = players[0].deck.cards
-    let card;
-    let positionY;
-
-    for(let i = 0; i < cards.length; i ++) {
-        if(id === cards[i].mesh.id) {
-            card = cards[i]
-
-            positionY = gameSettings.cardPosition[0][i].y
-            break;
-        }
-    }
-
-    return {item: card, y: positionY}
-}

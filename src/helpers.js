@@ -80,4 +80,61 @@ function toggleCard (card, y) {
   }
 }
 
-export {getTextureFromSprite, dealerCardAnimation, toggleCard }
+function initTextures () {
+  const textures = {}
+  const progressBox = document.getElementsByClassName('progress')[0]
+  const progressElement = document.getElementById('progress')
+  const loadingManager = new THREE.LoadingManager()
+  const textureLoader = new THREE.TextureLoader(loadingManager)
+
+  loadingManager.onStart = () => {
+      progressElement.value = 0
+  }
+
+  loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
+      let loaded = Math.round(itemsLoaded/itemsTotal) * 100
+      progressElement.value = loaded
+  }
+
+  loadingManager.onLoad = function ( ) {
+      progressBox.style.display = 'none'
+  }
+
+
+  textures.sceneMap = textureLoader.load('poker-table2.png')
+
+  const getKey = (key, obj) => obj[key]
+
+  for(let i = 0; i < 4; i ++) {
+      for (let j = 1; j <= 13; j ++) {
+
+          let s = getKey(gameSettings.suits[i], {
+              heart: 'h',
+              diamond: 'd',
+              clove: 'c',
+              spade: 's'
+          })
+          textures[`${s}${j}`] = textureLoader.load(`cards/original/${s}${j}.png`)
+      }
+  }
+
+  textures.cardFold = textureLoader.load('cards/cards-back.png')
+  textures.joker = textureLoader.load('cards/joker.png')
+
+  return textures
+}
+
+function getCardIndexFromDeck (id, cards) {
+  let index = 0
+
+  for(let i = 0; i < cards.length; i ++) {
+      if(id === cards[i].mesh.id) {
+          index = i
+          break;
+      }
+  }
+
+  return index
+}
+
+export {getTextureFromSprite, dealerCardAnimation, toggleCard, initTextures, getCardIndexFromDeck }
