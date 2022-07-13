@@ -4,9 +4,10 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import * as dat from 'dat.gui'
 import gsap from 'gsap'
 import playerJson from './player.json'
+import gameSettings from './gameSettings.json'
 import Player from './player'
 
-import { distributeCard } from './helpers'
+import { dealerCardAnimation } from './helpers'
 
 // loading manager
 const progressBox = document.getElementsByClassName('progress')[0]
@@ -24,7 +25,7 @@ loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
 
 loadingManager.onLoad = function ( ) {
 	progressBox.style.display = 'none'
-};
+}
 
 // Debug
 const gui = new dat.GUI()
@@ -37,78 +38,11 @@ const sceneMap = new THREE.TextureLoader(loadingManager).load('poker-table2.png'
 const scene = new THREE.Scene()
 scene.background = new THREE.Color(0x005B13)
 
-const gameSettings = {
-    playerPosition: [
-        { x: 0,  y: 0 },
-        { x: -3, y: 1 },
-        { x: 3, y: 1 },
-        { x: -3, y: 2 },
-        { x: 3, y: 2 }
-    ],
-    cardPosition: [
-        [
-            { x: 0, y: 0 },
-            { x: 0.2, y: 0 },
-            { x: 0.4, y: 0 },
-            { x: 0.6000000000000001, y: 0 },
-        ],
-        [
-            { x: -2.96, y: 1 },
-            { x: -2.76, y: 1 },
-            { x: -2.56, y: 1 },
-            { x: -2.36, y: 1 },
-        ],
-        [
-            { x: 3.08, y: 1 },
-            { x: 3.28, y: 1 },
-            { x: 3.48, y: 1 },
-            { x: 3.68, y: 1 },
-        ],
-        [
-            { x: -2.88, y: 2 },
-            { x: -2.6799999999999997, y: 2 },
-            { x: -2.48, y: 2 },
-            { x: -2.28, y: 2 },
-        ],
-        [
-            { x: 3.16, y: 2 },
-            { x: 3.36, y: 2 },
-            { x: 3.56, y: 2 },
-            { x: 3.76, y: 2 },
-        ]
-    ]
-}
-
-console.log(gameSettings.cardPosition)
 
 // Objects
 const cardsPerPlayer = 4;
 const players = []
 const objectsToDetect = []
-const cardsOnHand = []
-
-const enemyDeck = [
-    {
-        "suit": "joker",
-        "value": "joker"
-    },
-    {
-        "suit": "joker",
-        "value": "joker"
-    },
-    {
-        "suit": "joker",
-        "value": "joker"
-    },
-    {
-        "suit": "joker",
-        "value": "joker"
-    },
-    {
-        "suit": "joker",
-        "value": "joker"
-    },
-]
 
 // Init Player Class
 Object.values(playerJson).map(x => {
@@ -116,7 +50,7 @@ Object.values(playerJson).map(x => {
     let deck = []
     if(!x.deck){
         // Probably an enemy :D
-        deck.push(...enemyDeck)
+        deck.push(...gameSettings.enemyDeck)
     }else {
         deck.push(...x.deck)
     }
@@ -126,13 +60,6 @@ Object.values(playerJson).map(x => {
 
 // Add Card Content to ObjectsToDetect for Raycasting
 players[0].deck.cards.forEach(x => objectsToDetect.push(x.item))
-
-// For Dealer animation
-for(let i = 0; i < cardsPerPlayer; i ++) {
-    for(let j = 0; j < players.length; j ++){
-        cardsOnHand.push(players[j].deck.cards[i].mesh)
-    }
-}
 
 /**
  * Init table
@@ -259,23 +186,32 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2) )
  */
 
 let count = 0;
+let index = 0;
 
+let length = players.length
 const tick = () =>
 {
     if(count < players.length * cardsPerPlayer){
-        distributeCard(cardsOnHand[count], count, gameSettings.playerPosition.length, gameSettings.playerPosition[count % gameSettings.playerPosition.length].x + (count/gameSettings.playerPosition.length * 0.20), gameSettings.playerPosition[count % gameSettings.playerPosition.length].y)
+
+        let card = players[count % players.length].deck.cards[index].mesh
+        let x = gameSettings.cardPosition[count % players.length][index].x
+        let y = gameSettings.cardPosition[count % players.length][index].y
+
+        dealerCardAnimation(card, count, length, x, y)
+    
+        count ++
+        if(count % length === 0) {
+            index ++
+        }
+
     }
+        // Render
+        renderer.render(scene, camera)
 
-    count ++
-
-    // Render
-    renderer.render(scene, camera)
-
-    // Call tick again on the next frame
-    window.requestAnimationFrame(tick)
+        // Call tick again on the next frame
+        window.requestAnimationFrame(tick)
 }
 
 tick()
 
 // TODO: ALIGN CARD POSITION
-// TODO: REFACTOR DISTRIBUTE CARD

@@ -25,7 +25,7 @@ function getTextureFromSprite (tile, tilesX, tilesY, staticSrc) {
   return map
 }
 
-function distributeCard (card, count = 0, length = 5, x, y) {
+function dealerCardAnimation (card, count = 0, length = 5, x, y) {
   gsap.to(card.rotation, {
     z: 0,
     duration: 0.4,
@@ -55,4 +55,4 @@ function distributeCard (card, count = 0, length = 5, x, y) {
   }
 }
 
-export {getTextureFromSprite, distributeCard }
+export {getTextureFromSprite, dealerCardAnimation }
