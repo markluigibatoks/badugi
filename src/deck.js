@@ -1,5 +1,4 @@
 import * as THREE from 'three'
-import { getTextureFromSprite } from './helpers'
 
 const SUITS = ['heart', 'diamond', 'clove', 'spade']
 const VALUES = [
