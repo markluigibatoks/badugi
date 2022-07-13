@@ -46,7 +46,7 @@ function item (suit, value, textures) {
 
   // Mesh
   const mesh1 = new THREE.Mesh( geometryFront, materialFront )
-  mesh1.name = 'materialFront'
+  mesh1.name = `${value} of ${suit}s`
   card.add( mesh1 )
   const mesh2 = new THREE.Mesh( geometryBack, materialBack )
   mesh2.name = 'materialBack'

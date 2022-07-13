@@ -143,6 +143,10 @@ let count = 0;
 let index = 0;
 
 let length = players.length
+
+let isSorted = false
+let sortCount = 0
+
 const tick = () =>
 {
     if(count < players.length * gameSettings.cardsPerPlayer){
@@ -157,8 +161,25 @@ const tick = () =>
         if(count % length === 0) {
             index ++
         }
+    } else if (!isSorted) {
+        players[0].deck.sort()
+        initGUI(players, camera)
+        isSorted = true
+    } else if(sortCount < players[0].deck.cards.length) {
+        console.log(sortCount)
+        setTimeout(() => {
+            if(sortCount < 4) {
+                let card = players[0].deck.cards[sortCount].mesh
+                let x = gameSettings.cardPosition[0][sortCount].x
+                let y = gameSettings.cardPosition[0][sortCount].y
+
+                dealerCardAnimation(card, sortCount, length, x, y)
+            }
+
+            sortCount ++
+        }, 2000)
     }
-    
+        
     // Render
     renderer.render(scene, camera)
 
@@ -167,6 +188,4 @@ const tick = () =>
 }
 
 tick()
-
-initGUI(players, camera)
 

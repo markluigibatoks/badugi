@@ -3,6 +3,10 @@
     "image": "dummy1.jpg",
     "deck": [
       {
+        "suit": "spade",
+        "value": "4"
+      },
+      {
         "suit": "heart",
         "value": "2"
       },
@@ -13,10 +17,6 @@
       {
         "suit": "clove",
         "value": "3"
-      },
-      {
-        "suit": "spade",
-        "value": "4"
       }
     ]
   },

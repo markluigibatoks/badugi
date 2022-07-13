@@ -49,11 +49,11 @@ function dealerCardAnimation (card, count = 0, length = 5, x, y) {
       delay: (count * 0.05)
   })
   if(count % length == 0){
-      gsap.to(card.rotation, {
-          y: 0,
-          duration: 0.1,
-          delay: 0.4 + (count * 0.1)
-      })
+    gsap.to(card.rotation, {
+        y: 0,
+        duration: 0.1,
+        delay: 0.4 + (count * 0.1)
+    })
   }
 }
 
@@ -149,6 +149,7 @@ function initGUI (players, camera) {
           const cardFolder = playerFolder.addFolder(`Card ${index + 1}`)
           cardFolder.add(card.mesh.position, 'x').min(-4).max(4).step(0.001)
           cardFolder.add(card.mesh.position, 'y').min(-4).max(4).step(0.001)
+          cardFolder.add(card.mesh.position, 'z').min(-4).max(4).step(0.001)
       })
   })
 
