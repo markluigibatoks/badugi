@@ -1,13 +1,14 @@
 import * as THREE from 'three'
-
-const SUITS = ['heart', 'diamond', 'clove', 'spade']
-const VALUES = [
-  'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'
-]
+import gameSettings from './gameSettings.json'
 
 export default class Deck {
   constructor (cards, textures) {
     this.cards = loadCards(cards, textures)
+  }
+
+  sort () {
+    const getKey = (key, obj) => obj[key]
+    this.cards.sort((a, b) => getKey (a.value, gameSettings.values) - getKey (b.value, gameSettings.values) )
   }
 }
 

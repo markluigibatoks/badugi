@@ -3,12 +3,12 @@
     "image": "dummy1.jpg",
     "deck": [
       {
-        "suit": "diamond",
-        "value": "A"
-      },
-      {
         "suit": "heart",
         "value": "2"
+      },
+      {
+        "suit": "diamond",
+        "value": "A"
       },
       {
         "suit": "clove",
