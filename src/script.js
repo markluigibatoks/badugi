@@ -27,9 +27,6 @@ loadingManager.onLoad = function ( ) {
 	progressBox.style.display = 'none'
 }
 
-// Debug
-const gui = new dat.GUI()
-
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
 
@@ -203,15 +200,30 @@ const tick = () =>
         if(count % length === 0) {
             index ++
         }
-
     }
-        // Render
-        renderer.render(scene, camera)
 
-        // Call tick again on the next frame
-        window.requestAnimationFrame(tick)
+    // Render
+    renderer.render(scene, camera)
+
+    // Call tick again on the next frame
+    window.requestAnimationFrame(tick)
 }
 
 tick()
 
 // TODO: ALIGN CARD POSITION
+
+// Debug
+const gui = new dat.GUI()
+
+const playerCardFolder = gui.addFolder('Player Card Position')
+
+players.forEach( (player, index) => {
+    const playerFolder = playerCardFolder.addFolder(`Player ${index + 1}`)
+    player.deck.cards.forEach((card, index) => {
+        const cardFolder = playerFolder.addFolder(`Card ${index + 1}`)
+        cardFolder.add(card.mesh.position, 'x').min(-4).max(4).step(0.001)
+        cardFolder.add(card.mesh.position, 'y').min(-4).max(4).step(0.001)
+    })
+})
+
