@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import gsap from 'gsap'
+import gameSettings from './gameSettings.json'
 
 /**
  * 
@@ -55,4 +56,16 @@ function dealerCardAnimation (card, count = 0, length = 5, x, y) {
   }
 }
 
-export {getTextureFromSprite, dealerCardAnimation }
+function toggleCard (card, y) {
+  gsap.to(card.mesh.position, {
+      y: card.mesh.position.y === gameSettings.selectedPositionY ? y : gameSettings.selectedPositionY,
+      duration: 0.5,
+  })
+
+  gsap.to(card.outline, {
+      visible: !card.outline.visible,
+      duration: 0.5,
+  })
+}
+
+export {getTextureFromSprite, dealerCardAnimation, toggleCard }

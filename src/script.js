@@ -7,7 +7,7 @@ import playerJson from './player.json'
 import gameSettings from './gameSettings.json'
 import Player from './player'
 
-import { dealerCardAnimation } from './helpers'
+import { dealerCardAnimation, toggleCard } from './helpers'
 
 const textures = initTextures()
 
@@ -98,7 +98,6 @@ function onPointerMove( event ) {
 
 window.addEventListener( 'pointermove', onPointerMove )
 
-
 const raycaster = new THREE.Raycaster();
 
 function onMouseDown(){
@@ -107,31 +106,8 @@ function onMouseDown(){
 
     // Toggle Selected state of Card
     if(intersects.length){
-        // toggle Y axis of card group
-        // show outline of card
-        if(intersects[0].object.parent.parent.position.y ){
-
-            gsap.to(intersects[0].object.parent.parent.position, {
-                y: 0,
-                duration: 0.5,
-            })
-
-            gsap.to(intersects[0].object.parent.parent.children[1], {
-                visible: false,
-                duration: 0.5,
-            })
-        }else {
-
-            gsap.to(intersects[0].object.parent.parent.position, {
-                y: 0.3,
-                duration: 0.5,
-            })
-
-            gsap.to(intersects[0].object.parent.parent.children[1], {
-                visible: true,
-                duration: 0.5,
-            })
-        }
+        let card = getCard(intersects[0].object.parent.parent.id)
+        toggleCard(card.item, card.y)
     }
 }
 
@@ -184,7 +160,7 @@ const tick = () =>
             index ++
         }
     }
-
+    
     // Render
     renderer.render(scene, camera)
 
@@ -256,4 +232,21 @@ function initTextures () {
     textures.joker = textureLoader.load('cards/joker.png')
 
     return textures
+}
+
+function getCard (id) {
+    let cards = players[0].deck.cards
+    let card;
+    let positionY;
+
+    for(let i = 0; i < cards.length; i ++) {
+        if(id === cards[i].mesh.id) {
+            card = cards[i]
+
+            positionY = gameSettings.cardPosition[0][i].y
+            break;
+        }
+    }
+
+    return {item: card, y: positionY}
 }
