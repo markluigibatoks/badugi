@@ -227,3 +227,8 @@ players.forEach( (player, index) => {
     })
 })
 
+const cameraFolder = gui.addFolder('Camera')
+cameraFolder.add(camera.position, 'x', 0, 4, 0.001)
+cameraFolder.add(camera.position, 'y', 0, 4, 0.001)
+cameraFolder.add(camera.position, 'z', 0, 4, 0.001)
+
