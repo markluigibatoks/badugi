@@ -1,6 +1,7 @@
 import * as THREE from 'three'
 import gsap from 'gsap'
 import gameSettings from './gameSettings.json'
+import * as dat from 'dat.gui'
 
 /**
  * 
@@ -137,4 +138,24 @@ function getCardIndexFromDeck (id, cards) {
   return index
 }
 
-export {getTextureFromSprite, dealerCardAnimation, toggleCard, initTextures, getCardIndexFromDeck }
+function initGUI (players, camera) {
+  const gui = new dat.GUI()
+
+  const playerCardFolder = gui.addFolder('Player Card Position')
+
+  players.forEach( (player, index) => {
+      const playerFolder = playerCardFolder.addFolder(`Player ${index + 1}`)
+      player.deck.cards.forEach((card, index) => {
+          const cardFolder = playerFolder.addFolder(`Card ${index + 1}`)
+          cardFolder.add(card.mesh.position, 'x').min(-4).max(4).step(0.001)
+          cardFolder.add(card.mesh.position, 'y').min(-4).max(4).step(0.001)
+      })
+  })
+
+  const cameraFolder = gui.addFolder('Camera')
+  cameraFolder.add(camera.position, 'x', 0, 4, 0.0001)
+  cameraFolder.add(camera.position, 'y', 0, 4, 0.0001)
+  cameraFolder.add(camera.position, 'z', 0, 4, 0.0001)
+}
+
+export {getTextureFromSprite, dealerCardAnimation, toggleCard, initTextures, getCardIndexFromDeck, initGUI }

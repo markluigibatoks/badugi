@@ -1,13 +1,11 @@
 import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import * as dat from 'dat.gui'
-import gsap from 'gsap'
 import playerJson from './player.json'
 import gameSettings from './gameSettings.json'
 import Player from './player'
 
-import { dealerCardAnimation, toggleCard, initTextures, getCardIndexFromDeck } from './helpers'
+import { dealerCardAnimation, toggleCard, initTextures, getCardIndexFromDeck, initGUI } from './helpers'
 
 const textures = initTextures()
 
@@ -170,22 +168,5 @@ const tick = () =>
 
 tick()
 
-// Debug
-const gui = new dat.GUI()
-
-const playerCardFolder = gui.addFolder('Player Card Position')
-
-players.forEach( (player, index) => {
-    const playerFolder = playerCardFolder.addFolder(`Player ${index + 1}`)
-    player.deck.cards.forEach((card, index) => {
-        const cardFolder = playerFolder.addFolder(`Card ${index + 1}`)
-        cardFolder.add(card.mesh.position, 'x').min(-4).max(4).step(0.001)
-        cardFolder.add(card.mesh.position, 'y').min(-4).max(4).step(0.001)
-    })
-})
-
-const cameraFolder = gui.addFolder('Camera')
-cameraFolder.add(camera.position, 'x', 0, 4, 0.0001)
-cameraFolder.add(camera.position, 'y', 0, 4, 0.0001)
-cameraFolder.add(camera.position, 'z', 0, 4, 0.0001)
+initGUI(players, camera)
 
