@@ -57,15 +57,27 @@ function dealerCardAnimation (card, count = 0, length = 5, x, y) {
 }
 
 function toggleCard (card, y) {
-  gsap.to(card.mesh.position, {
-      y: card.mesh.position.y === gameSettings.selectedPositionY ? y : gameSettings.selectedPositionY,
-      duration: 0.5,
-  })
+  if(card.mesh.position.y === gameSettings.selectedPositionY) {
+    gsap.to(card.mesh.position, {
+        y: y,
+        duration: 0.5,
+    })
 
-  gsap.to(card.outline, {
-      visible: !card.outline.visible,
+    gsap.to(card.outline, {
+        visible: false,
+        duration: 0.5,
+    })
+  } else {
+    gsap.to(card.mesh.position, {
+      y: gameSettings.selectedPositionY,
       duration: 0.5,
-  })
+    })
+
+    gsap.to(card.outline, {
+        visible: true,
+        duration: 0.5,
+    })
+  }
 }
 
 export {getTextureFromSprite, dealerCardAnimation, toggleCard }
