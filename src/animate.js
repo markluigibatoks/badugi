@@ -6,12 +6,11 @@ export default _properties => new Promise(resolve => {
   const properties = Object.assign({
     animationTime: 2800,
     foo: foo,
-    count: 0,
-    index: 0
+    loop: 20
   }, _properties)
 
   let start, previousTimeStamp
-  let stopId
+  let stopId, count = 0
 
   const tick = async (timestamp) => {
     if(start === undefined) {
@@ -20,16 +19,13 @@ export default _properties => new Promise(resolve => {
 
     const elapseTime = timestamp - start
     if(previousTimeStamp !== timestamp) {
-      properties.foo({count: properties.count, index: properties.index, length: properties.length, players: properties.players})
-      
-      properties.count ++
-      
-      if(properties.count % properties.length === 0) {
-        properties.index ++
+      if(count < properties.loop){
+        properties.foo(count, properties.itemsToAnimate)
+        count ++
       }
     }
   
-    if(elapseTime <  properties.animationTime){
+    if(elapseTime < properties.animationTime){
         previousTimeStamp = timestamp
 
         // Render

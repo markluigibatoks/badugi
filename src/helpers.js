@@ -27,29 +27,29 @@ function getTextureFromSprite (tile, tilesX, tilesY, staticSrc) {
   return map
 }
 
-function dealerCardAnimation (card, count = 0, length = 5, x, y) {
-  gsap.to(card.rotation, {
+function dealerCardAnimation (count, itemToAnimate) {
+  gsap.to(itemToAnimate.card.rotation, {
     z: 0,
     duration: 0.4,
     delay: (count * 0.05)
   })
-  gsap.to(card.position, {
-      x: x,
+  gsap.to(itemToAnimate.card.position, {
+      x: itemToAnimate.x,
       duration: 0.4,
       delay: (count * 0.05)
   })
-  gsap.to(card.position, {
-      y: y,
+  gsap.to(itemToAnimate.card.position, {
+      y: itemToAnimate.y,
       duration: 0.4,
       delay: (count * 0.05)
   })
-  gsap.to(card.position, {
+  gsap.to(itemToAnimate.card.position, {
       z: 0.0021 * count,
       duration: 0.1,
       delay: (count * 0.05)
   })
-  if(count % length == 0){
-    gsap.to(card.rotation, {
+  if(count % gameSettings.playersCount == 0){
+    gsap.to(itemToAnimate.card.rotation, {
         y: 0,
         duration: 0.1,
         delay: 0.4 + (count * 0.1)

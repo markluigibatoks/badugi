@@ -92,5 +92,6 @@
         "K": 13
     },
     "cardsPerPlayer": 4,
-    "selectedPositionY": 0.3
+    "selectedPositionY": 0.3,
+    "playersCount": 5
   }

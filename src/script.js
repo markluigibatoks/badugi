@@ -146,40 +146,55 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2) )
 const totalCards = players.length * gameSettings.cardsPerPlayer;
 
 (async () => {
+    const itemsToDistribute = []
+
+    for(let i = 0, index = 0; i < totalCards;) {
+
+        const card = players[i % players.length].deck.cards[index].mesh
+        const x = gameSettings.cardPosition[i % players.length][index].x
+        const y = gameSettings.cardPosition[i % players.length][index].y
+
+        itemsToDistribute.push({card: card, x: x, y: y})
+
+        i ++
+        if(i % players.length === 0) {
+            index ++
+        }
+    }
+
     await animate ({
         renderer: renderer,
         scene: scene,
         camera: camera,
         animationTime: (Math.log10(totalCards) + (totalCards * 0.05) + 0.4) * 1000,
-        length: players.length,
-        players: players,
-        foo: ( {count, index, length, players} ) => {
-            if(count < length * gameSettings.cardsPerPlayer){
-            
-              let card = players[count % length].deck.cards[index].mesh
-              let x = gameSettings.cardPosition[count % length][index].x
-              let y = gameSettings.cardPosition[count % length][index].y
-        
-              dealerCardAnimation(card, count, length, x, y)
-            }
+        loop: totalCards,
+        itemsToAnimate: itemsToDistribute,
+        foo: (count, itemsToAnimate) => {
+            dealerCardAnimation(count, itemsToAnimate[count])
         }
     })
+
     players[0].deck.sort()
+
+    const itemsToSort = []
+
+    for(let i = 0; i < gameSettings.cardsPerPlayer; i ++) {
+        const card = players[0].deck.cards[i].mesh
+        const x = gameSettings.cardPosition[0][i].x
+        const y = gameSettings.cardPosition[0][i].y
+
+        itemsToSort.push({card: card, x: x, y: y})
+    }
+
     await animate ({
         renderer: renderer,
         scene: scene,
         camera: camera,
         animationTime: (Math.log10(gameSettings.cardsPerPlayer) + (gameSettings.cardsPerPlayer * 0.05) + 0.4) * 1000,
-        length: players.length,
-        players: players,
-        foo: ( {count, length, players} ) => {
-            if(count < 4) {
-                let card = players[0].deck.cards[count].mesh
-                let x = gameSettings.cardPosition[0][count].x
-                let y = gameSettings.cardPosition[0][count].y
-            
-            dealerCardAnimation(card, count, length, x, y)
-            }
+        loop: gameSettings.cardsPerPlayer,
+        itemsToAnimate: itemsToSort,
+        foo: (count, itemsToAnimate) => {
+            dealerCardAnimation(count, itemsToAnimate[count])
         }
     })
 })()
