@@ -138,23 +138,27 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2) )
 
 const totalCards = players.length * gameSettings.cardsPerPlayer;
 
-console.log( animate ({
-    renderer: renderer,
-    scene: scene,
-    camera: camera,
-    animationTime: (Math.log10(totalCards) + (totalCards * 0.05) + 0.4) * 1000,
-    count: 0,
-    index: 0,
-    length: players.length,
-    players: players,
-    foo: ( count, index, length, players ) => {
-        if(count < length * gameSettings.cardsPerPlayer){
+(async () => {
+    await animate ({
+        renderer: renderer,
+        scene: scene,
+        camera: camera,
+        animationTime: (Math.log10(totalCards) + (totalCards * 0.05) + 0.4) * 1000,
+        count: 0,
+        index: 0,
+        length: players.length,
+        players: players,
+        foo: ( count, index, length, players ) => {
+            if(count < length * gameSettings.cardsPerPlayer){
+            
+              let card = players[count % length].deck.cards[index].mesh
+              let x = gameSettings.cardPosition[count % length][index].x
+              let y = gameSettings.cardPosition[count % length][index].y
         
-          let card = players[count % length].deck.cards[index].mesh
-          let x = gameSettings.cardPosition[count % length][index].x
-          let y = gameSettings.cardPosition[count % length][index].y
-    
-          dealerCardAnimation(card, count, length, x, y)
+              dealerCardAnimation(card, count, length, x, y)
+            }
         }
-    }
-}))
+    })
+    
+    console.log('object');
+})()
