@@ -44,7 +44,7 @@ function dealerCardAnimation (card, count = 0, length = 5, x, y) {
       delay: (count * 0.05)
   })
   gsap.to(card.position, {
-      z: 0.001 * count,
+      z: 0.0021 * count,
       duration: 0.1,
       delay: (count * 0.05)
   })

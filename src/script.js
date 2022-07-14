@@ -78,6 +78,8 @@ window.addEventListener('resize', () =>
 
     // Update camera
     camera.aspect = sizes.width / sizes.height
+    camera.fov = 65;
+    camera.position.z = 3
     camera.updateProjectionMatrix()
 
     // Update renderer

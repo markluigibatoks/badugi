@@ -32,8 +32,8 @@ function createCard (item, outline){
 
 function item (suit, value, textures) {
   // Objects
-  const geometryFront = new THREE.PlaneGeometry( 0.5, 0.7, 1, 1 )
-  const geometryBack = new THREE.PlaneGeometry( 0.5, 0.7, 1, 1 )
+  const geometryFront = new THREE.PlaneGeometry( 0.7, 0.9, 1, 1 )
+  const geometryBack = new THREE.PlaneGeometry( 0.7, 0.9, 1, 1 )
 
   // // Materials
   const textureBack = textures.cardFold
@@ -56,7 +56,7 @@ function item (suit, value, textures) {
 }
 
 function outline () {
-  let geometry = new THREE.PlaneGeometry( 0.55, 0.75, 1, 1 )
+  let geometry = new THREE.PlaneGeometry( 0.73, 0.93, 1, 1 )
   let material = new THREE.MeshStandardMaterial({color: 0x049ef4, side: THREE.DoubleSide})
   let mesh = new THREE.Mesh( geometry, material )
   mesh.position.z = -0.0001
