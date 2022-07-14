@@ -7,7 +7,9 @@ export default _properties => new Promise(resolve => {
 
   const properties = Object.assign({
     animationTime: 2800,
-    foo: foo
+    foo: foo,
+    count: 0,
+    index: 0
   }, _properties)
 
   let start, previousTimeStamp
@@ -21,7 +23,7 @@ export default _properties => new Promise(resolve => {
 
     const elapseTime = timestamp - start
     if(previousTimeStamp !== timestamp) {
-      properties.foo(properties.count, properties.index, properties.length, properties.players)
+      properties.foo({count: properties.count, index: properties.index, length: properties.length, players: properties.players})
       
       properties.count ++
       
@@ -42,8 +44,7 @@ export default _properties => new Promise(resolve => {
 
     } else {
       window.cancelAnimationFrame(stopId)
-      console.log('test');
-      sleep(5000).then(() => resolve())
+      resolve()
     } 
   }
 

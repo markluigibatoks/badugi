@@ -144,11 +144,9 @@ const totalCards = players.length * gameSettings.cardsPerPlayer;
         scene: scene,
         camera: camera,
         animationTime: (Math.log10(totalCards) + (totalCards * 0.05) + 0.4) * 1000,
-        count: 0,
-        index: 0,
         length: players.length,
         players: players,
-        foo: ( count, index, length, players ) => {
+        foo: ( {count, index, length, players} ) => {
             if(count < length * gameSettings.cardsPerPlayer){
             
               let card = players[count % length].deck.cards[index].mesh
@@ -159,6 +157,22 @@ const totalCards = players.length * gameSettings.cardsPerPlayer;
             }
         }
     })
-    
-    console.log('object');
+    players[0].deck.sort()
+    await animate ({
+        renderer: renderer,
+        scene: scene,
+        camera: camera,
+        animationTime: (Math.log10(gameSettings.cardsPerPlayer) + (gameSettings.cardsPerPlayer * 0.05) + 0.4) * 1000,
+        length: players.length,
+        players: players,
+        foo: ( {count, length, players} ) => {
+            if(count < 4) {
+                let card = players[0].deck.cards[count].mesh
+                let x = gameSettings.cardPosition[0][count].x
+                let y = gameSettings.cardPosition[0][count].y
+            
+            dealerCardAnimation(card, count, length, x, y)
+            }
+        }
+    })
 })()
