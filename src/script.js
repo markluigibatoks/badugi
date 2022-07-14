@@ -67,8 +67,11 @@ const sizes = {
     height: window.innerHeight
 }
 
+const clock = new THREE.Clock()
+
 window.addEventListener('resize', () =>
 {
+    
     // Update sizes
     sizes.width = window.innerWidth
     sizes.height = window.innerHeight
@@ -80,6 +83,12 @@ window.addEventListener('resize', () =>
     // Update renderer
     renderer.setSize(sizes.width, sizes.height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+    animate({
+        renderer: renderer,
+        camera: camera,
+        scene: scene,
+        animationTime: clock.getDelta()
+    })
 })
 
 // Mouse

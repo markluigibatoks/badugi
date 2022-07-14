@@ -1,9 +1,7 @@
 const sleep = time => new Promise(res => setTimeout(res, time))
 
 export default _properties => new Promise(resolve => {
-  const foo = () => { 
-    throw new Error('Object to animate is blank')
-  }
+  const foo = () => { }
 
   const properties = Object.assign({
     animationTime: 2800,
