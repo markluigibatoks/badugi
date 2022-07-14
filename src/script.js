@@ -4,6 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import playerJson from './player.json'
 import gameSettings from './gameSettings.json'
 import Player from './player'
+import animate from './animate.js'
 
 import { dealerCardAnimation, toggleCard, initTextures, getCardIndexFromDeck, initGUI } from './helpers'
 
@@ -135,58 +136,25 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2) )
 
-/**
- * Animate
- */
+const totalCards = players.length * gameSettings.cardsPerPlayer;
 
-let count = 0;
-let index = 0;
-
-let length = players.length
-
-let isSorted = false
-let sortCount = 0
-
-const tick = () =>
-{
-    if(count < players.length * gameSettings.cardsPerPlayer){
-
-        let card = players[count % players.length].deck.cards[index].mesh
-        let x = gameSettings.cardPosition[count % players.length][index].x
-        let y = gameSettings.cardPosition[count % players.length][index].y
-
-        dealerCardAnimation(card, count, length, x, y)
+console.log( animate ({
+    renderer: renderer,
+    scene: scene,
+    camera: camera,
+    animationTime: (Math.log10(totalCards) + (totalCards * 0.05) + 0.4) * 1000,
+    count: 0,
+    index: 0,
+    length: players.length,
+    players: players,
+    foo: ( count, index, length, players ) => {
+        if(count < length * gameSettings.cardsPerPlayer){
+        
+          let card = players[count % length].deck.cards[index].mesh
+          let x = gameSettings.cardPosition[count % length][index].x
+          let y = gameSettings.cardPosition[count % length][index].y
     
-        count ++
-        if(count % length === 0) {
-            index ++
+          dealerCardAnimation(card, count, length, x, y)
         }
-    } else if (!isSorted) {
-        players[0].deck.sort()
-        initGUI(players, camera)
-        isSorted = true
-    } else if(sortCount < players[0].deck.cards.length) {
-
-        setTimeout(() => {
-            if(sortCount < 4) {
-                let card = players[0].deck.cards[sortCount].mesh
-                let x = gameSettings.cardPosition[0][sortCount].x
-                let y = gameSettings.cardPosition[0][sortCount].y
-
-                dealerCardAnimation(card, sortCount, length, x, y)
-            }
-
-            sortCount ++
-        }, 2000)
-        
     }
-        
-    // Render
-    renderer.render(scene, camera)
-
-    // Call tick again on the next frame
-    window.requestAnimationFrame(tick)
-}
-
-tick()
-
+}))
