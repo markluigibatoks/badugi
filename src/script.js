@@ -112,11 +112,7 @@ function onMouseDown(){
     raycaster.setFromCamera( pointer, camera );
     const intersects = raycaster.intersectObjects( objectsToDetect, true );
 
-    // Toggle Selected state of Card
-    if(intersects.length){
-        let cardIndex = getCardIndexFromDeck(intersects[0].object.parent.parent.id, players[0].deck.cards)
-        toggleCard(players[0].deck.cards[cardIndex], gameSettings.cardPosition[0][cardIndex].y)
-    }
+    console.log(intersects[0])
 }
 
 
