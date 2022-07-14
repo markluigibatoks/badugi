@@ -11,7 +11,6 @@ export default _properties => new Promise(resolve => {
   }, _properties)
 
   let start, previousTimeStamp
-  let done = false
   let stopId
 
   const tick = async (timestamp) => {
@@ -33,12 +32,10 @@ export default _properties => new Promise(resolve => {
     if(elapseTime <  properties.animationTime){
         previousTimeStamp = timestamp
 
-        if(!done) {
         // Render
-            properties.renderer.render(properties.scene, properties.camera)
+        properties.renderer.render(properties.scene, properties.camera)
 
-            stopId = window.requestAnimationFrame(tick)
-        }
+        stopId = window.requestAnimationFrame(tick)
 
     } else {
       window.cancelAnimationFrame(stopId)
