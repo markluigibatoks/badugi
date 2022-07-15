@@ -6,7 +6,7 @@ import gameSettings from './gameSettings.json'
 import Player from './player'
 import animate from './animate.js'
 
-import { dealerCardAnimation, toggleCard, initTextures, initGUI, getCardIndexFromDeck, getNumberOfSelectedCards, checkIfCardIsSelected } from './helpers'
+import { dealerCardAnimation, toggleCard, initTextures, initGUI, getCardIndexFromDeck, getNumberOfSelectedCards, checkIfCardIsSelected, foldCards } from './helpers'
 
 const textures = initTextures()
 
@@ -230,14 +230,24 @@ const totalCards = players.length * gameSettings.cardsPerPlayer;
             dealerCardAnimation(count, itemsToAnimate[count])
         }
     })
+
+    const itemsToFold = []
+    for(let i = 0; i < gameSettings.cardsPerPlayer; i ++) {
+        const card = players[1].deck.cards[i].mesh
+        const x = gameSettings.foldPosition[1][i].x
+
+        itemsToFold.push({ card: card, x: x })
+    }
+
+    await animate ({
+        renderer: renderer,
+        scene: scene,
+        camera: camera,
+        animationTime: (Math.log10(gameSettings.cardsPerPlayer) + (gameSettings.cardsPerPlayer * 0.01)) * 1000,
+        loop: gameSettings.cardsPerPlayer,
+        itemsToAnimate: itemsToFold,
+        foo: (count, itemsToAnimate) => {
+            foldCards(count, itemsToAnimate[count])
+        }
+    })
 })()
-
-// const tick = () => {
-//     renderer.render(scene, camera)
-    
-//     controls.update()
-
-//     window.requestAnimationFrame(tick)
-// }
-// tick()
-// initGUI(players, camera)

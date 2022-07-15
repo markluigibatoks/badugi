@@ -60,12 +60,12 @@ function dealerCardAnimation (count, itemToAnimate) {
 function toggleCard (count, itemToAnimate) {
   gsap.to(itemToAnimate.card.mesh.position, {
       y: itemToAnimate.y,
-      duration: 0.5,
+      duration: 0.5
   })
 
   gsap.to(itemToAnimate.card.outline, {
       visible: itemToAnimate.isOutline,
-      duration: 0.5,
+      duration: 0.5
   })
 }
 
@@ -128,6 +128,14 @@ function initTextures () {
   return textures
 }
 
+function foldCards(count, itemToAnimate) {
+  itemToAnimate.card.children[0].children[1].material.color = new THREE.Color(0x666666)
+  gsap.to(itemToAnimate.card.position, {
+    x: itemToAnimate.x,
+    duration: 0.1
+  })
+}
+
 function getCardIndexFromDeck (id, cards) {
   let index = 0
 
@@ -162,4 +170,4 @@ function initGUI (players, camera) {
   cameraFolder.add(camera.position, 'z', 0, 4, 0.0001)
 }
 
-export {getTextureFromSprite, dealerCardAnimation, toggleCard, initTextures, getCardIndexFromDeck, initGUI, getNumberOfSelectedCards, checkIfCardIsSelected }
+export {getTextureFromSprite, dealerCardAnimation, toggleCard, initTextures, getCardIndexFromDeck, initGUI, getNumberOfSelectedCards, checkIfCardIsSelected, foldCards }
