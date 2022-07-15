@@ -115,6 +115,7 @@ function onMouseDown(){
     raycaster.setFromCamera( pointer, camera );
     const intersects = raycaster.intersectObjects( objectsToDetect, true );
 
+    if(intersects.length){
     const id = intersects[0].object.parent.parent.id
     const index = getCardIndexFromDeck(id, players[0].deck.cards)
 
@@ -135,7 +136,7 @@ function onMouseDown(){
         foo: (count, itemsToAnimate) => {
             toggleCard(count, itemsToAnimate[count])
         }
-    })
+    })}
 }
 
 
@@ -223,7 +224,6 @@ const totalCards = players.length * gameSettings.cardsPerPlayer;
         }
     })
 })()
-
 
 // const tick = () => {
 //     renderer.render(scene, camera)
