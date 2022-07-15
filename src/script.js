@@ -6,7 +6,7 @@ import gameSettings from './gameSettings.json'
 import Player from './player'
 import animate from './animate.js'
 
-import { dealerCardAnimation, toggleCard, initTextures, getCardIndexFromDeck, initGUI } from './helpers'
+import { dealerCardAnimation, toggleCard, initTextures, initGUI, getCardIndexFromDeck } from './helpers'
 
 const textures = initTextures()
 
@@ -89,7 +89,8 @@ window.addEventListener('resize', () =>
         renderer: renderer,
         camera: camera,
         scene: scene,
-        animationTime: clock.getDelta()
+        animationTime: clock.getDelta(),
+        loop: 1
     })
 })
 
@@ -114,7 +115,27 @@ function onMouseDown(){
     raycaster.setFromCamera( pointer, camera );
     const intersects = raycaster.intersectObjects( objectsToDetect, true );
 
-    console.log(intersects[0])
+    const id = intersects[0].object.parent.parent.id
+    const index = getCardIndexFromDeck(id, players[0].deck.cards)
+
+    const itemsToAnimate = []
+    itemsToAnimate.push({
+        card: players[0].deck.cards[index],
+        y: players[0].deck.cards[index].mesh.position.y === gameSettings.selectedPositionY ? gameSettings.cardPosition[0][index].y : gameSettings.selectedPositionY,
+        isOutline: players[0].deck.cards[index].mesh.position.y !== gameSettings.selectedPositionY
+    })
+
+    animate({
+        renderer: renderer,
+        scene: scene,
+        camera: camera,
+        loop: 1,
+        animationTime: 0.6 * 1000,
+        itemsToAnimate: itemsToAnimate,
+        foo: (count, itemsToAnimate) => {
+            toggleCard(count, itemsToAnimate[count])
+        }
+    })
 }
 
 
@@ -131,6 +152,10 @@ const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 
 camera.position.x = gameSettings.cameraPosition.x
 camera.position.y = gameSettings.cameraPosition.y
 camera.position.z = gameSettings.cameraPosition.z
+
+// Controls
+// const controls = new OrbitControls(camera, canvas)
+// controls.enableDamping = true
 
 /**
  * Renderer
@@ -198,3 +223,14 @@ const totalCards = players.length * gameSettings.cardsPerPlayer;
         }
     })
 })()
+
+
+// const tick = () => {
+//     renderer.render(scene, camera)
+    
+//     controls.update()
+
+//     window.requestAnimationFrame(tick)
+// }
+// tick()
+// initGUI(players, camera)

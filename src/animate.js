@@ -6,7 +6,7 @@ export default _properties => new Promise(resolve => {
   const properties = Object.assign({
     animationTime: 2800,
     foo: foo,
-    loop: 20
+    loop: 1
   }, _properties)
 
   let start, previousTimeStamp

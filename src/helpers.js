@@ -57,28 +57,16 @@ function dealerCardAnimation (count, itemToAnimate) {
   }
 }
 
-function toggleCard (card, y) {
-  if(card.mesh.position.y === gameSettings.selectedPositionY) {
-    gsap.to(card.mesh.position, {
-        y: y,
-        duration: 0.5,
-    })
-
-    gsap.to(card.outline, {
-        visible: false,
-        duration: 0.5,
-    })
-  } else {
-    gsap.to(card.mesh.position, {
-      y: gameSettings.selectedPositionY,
+function toggleCard (count, itemToAnimate) {
+  gsap.to(itemToAnimate.card.mesh.position, {
+      y: itemToAnimate.y,
       duration: 0.5,
-    })
+  })
 
-    gsap.to(card.outline, {
-        visible: true,
-        duration: 0.5,
-    })
-  }
+  gsap.to(itemToAnimate.card.outline, {
+      visible: itemToAnimate.isOutline,
+      duration: 0.5,
+  })
 }
 
 function initTextures () {
