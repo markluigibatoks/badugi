@@ -6,7 +6,7 @@ import gameSettings from './gameSettings.json'
 import Player from './player'
 import animate from './animate.js'
 
-import { dealerCardAnimation, toggleCard, initTextures, initGUI, getCardIndexFromDeck } from './helpers'
+import { dealerCardAnimation, toggleCard, initTextures, initGUI, getCardIndexFromDeck, getNumberOfSelectedCards, checkIfCardIsSelected } from './helpers'
 
 const textures = initTextures()
 
@@ -116,27 +116,34 @@ function onMouseDown(){
     const intersects = raycaster.intersectObjects( objectsToDetect, true );
 
     if(intersects.length){
-    const id = intersects[0].object.parent.parent.id
-    const index = getCardIndexFromDeck(id, players[0].deck.cards)
 
-    const itemsToAnimate = []
-    itemsToAnimate.push({
-        card: players[0].deck.cards[index],
-        y: players[0].deck.cards[index].mesh.position.y === gameSettings.selectedPositionY ? gameSettings.cardPosition[0][index].y : gameSettings.selectedPositionY,
-        isOutline: players[0].deck.cards[index].mesh.position.y !== gameSettings.selectedPositionY
-    })
+        const id = intersects[0].object.parent.parent.id
+        const index = getCardIndexFromDeck(id, players[0].deck.cards)
 
-    animate({
-        renderer: renderer,
-        scene: scene,
-        camera: camera,
-        loop: 1,
-        animationTime: 0.6 * 1000,
-        itemsToAnimate: itemsToAnimate,
-        foo: (count, itemsToAnimate) => {
-            toggleCard(count, itemsToAnimate[count])
+        if(!checkIfCardIsSelected(players[0].deck.cards[index]) && getNumberOfSelectedCards(players[0].deck.cards) >= 2){
+            console.log('Maximum of possible draw card is 2')
+            return
         }
-    })}
+
+        const itemsToAnimate = []
+        itemsToAnimate.push({
+            card: players[0].deck.cards[index],
+            y: players[0].deck.cards[index].mesh.position.y === gameSettings.selectedPositionY ? gameSettings.cardPosition[0][index].y : gameSettings.selectedPositionY,
+            isOutline: players[0].deck.cards[index].mesh.position.y !== gameSettings.selectedPositionY
+        })
+
+        animate({
+            renderer: renderer,
+            scene: scene,
+            camera: camera,
+            loop: 1,
+            animationTime: 0.6 * 1000,
+            itemsToAnimate: itemsToAnimate,
+            foo: (count, itemsToAnimate) => {
+                toggleCard(count, itemsToAnimate[count])
+            }
+        })
+    }
 }
 
 

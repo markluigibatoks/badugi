@@ -93,5 +93,6 @@
     },
     "cardsPerPlayer": 4,
     "selectedPositionY": 0.1,
-    "playersCount": 5
+    "playersCount": 5,
+    "maximumDrawCard": 2
   }

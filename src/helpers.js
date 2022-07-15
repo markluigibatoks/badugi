@@ -69,6 +69,21 @@ function toggleCard (count, itemToAnimate) {
   })
 }
 
+function getNumberOfSelectedCards(cards) {
+  let count = 0;
+  cards.forEach(x => {
+    if(x.outline.visible) {
+      count ++;
+    }
+  })
+
+  return count
+}
+
+function checkIfCardIsSelected(card) {
+  return card.outline.visible
+}
+
 function initTextures () {
   const textures = {}
   const progressBox = document.getElementsByClassName('progress')[0]
@@ -147,4 +162,4 @@ function initGUI (players, camera) {
   cameraFolder.add(camera.position, 'z', 0, 4, 0.0001)
 }
 
-export {getTextureFromSprite, dealerCardAnimation, toggleCard, initTextures, getCardIndexFromDeck, initGUI }
+export {getTextureFromSprite, dealerCardAnimation, toggleCard, initTextures, getCardIndexFromDeck, initGUI, getNumberOfSelectedCards, checkIfCardIsSelected }
