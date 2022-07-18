@@ -233,9 +233,6 @@ async function onMouseDown(){
                 }
             })
 
-            selectedCards.clear()
-            unselectedCards.clear()
-
             return
         }
 
@@ -299,7 +296,7 @@ const totalCards = players.length * gameSettings.cardsPerPlayer;
         const x = gameSettings.cardPosition[i % players.length][index].x
         const y = gameSettings.cardPosition[i % players.length][index].y
         const z = gameSettings.cardPosition[i % players.length][index].z
-        console.log(z)
+
         itemsToDistribute.push({card: card, x: x, y: y, z: z, flip: i % players.length === 0})
 
         i ++
