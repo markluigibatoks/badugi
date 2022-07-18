@@ -143,7 +143,7 @@ async function onMouseDown(){
                 renderer: renderer,
                 scene: scene,
                 camera: camera,
-                animationTime: (Math.log10(selectedCards.length) + (selectedCards.length * 0.05) + 0.4) * 1000,
+                animationTime: 200,
                 loop: selectedCards.length,
                 itemsToAnimate: itemsToAnimate,
                 foo: (count, itemsToAnimate) => {
@@ -172,7 +172,7 @@ async function onMouseDown(){
                 renderer: renderer,
                 scene: scene,
                 camera: camera,
-                animationTime: (Math.log10(itemsToSort.length) + (itemsToSort.length * 0.05) + 0.4) * 1000,
+                animationTime: 200,
                 loop: itemsToSort.length,
                 itemsToAnimate: itemsToSort,
                 foo: (count, itemsToAnimate) => {
@@ -200,7 +200,7 @@ async function onMouseDown(){
                 renderer: renderer,
                 scene: scene,
                 camera: camera,
-                animationTime: (Math.log10(itemsToDraw.length) + (itemsToDraw.length * 0.05) + 0.4) * 1000,
+                animationTime: 500,
                 loop: itemsToDraw.length,
                 itemsToAnimate: itemsToDraw,
                 foo: (count, itemsToAnimate) => {
