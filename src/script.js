@@ -171,7 +171,8 @@ camera.position.z = gameSettings.cameraPosition.z
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas,
     powerPreference: "high-performance",
-    alpha: true
+    alpha: true,
+    antialias: true,
 })
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2) )
