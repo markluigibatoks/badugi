@@ -28,29 +28,29 @@ function getTextureFromSprite (tile, tilesX, tilesY, staticSrc) {
 }
 
 function dealerCardAnimation (count, itemToAnimate) {
-  gsap.to(itemToAnimate.card.rotation, {
-    z: 0,
+  gsap.to(itemToAnimate.card.card.position, {
+    z: itemToAnimate.z,
+    duration: 0.1,
+    delay: (count * 0.05)
+  })
+  gsap.to(itemToAnimate.card.card.rotation, {
+    z: itemToAnimate.rotation?.z ?? 0,
     duration: 0.4,
     delay: (count * 0.05)
   })
-  gsap.to(itemToAnimate.card.position, {
+  gsap.to(itemToAnimate.card.card.position, {
       x: itemToAnimate.x,
       duration: 0.4,
       delay: (count * 0.05)
   })
-  gsap.to(itemToAnimate.card.position, {
+  gsap.to(itemToAnimate.card.card.position, {
       y: itemToAnimate.y,
       duration: 0.4,
       delay: (count * 0.05)
   })
-  gsap.to(itemToAnimate.card.position, {
-      z: 0.0021 * count,
-      duration: 0.1,
-      delay: (count * 0.05)
-  })
-  if(count % gameSettings.playersCount == 0){
-    gsap.to(itemToAnimate.card.rotation, {
-        y: 0,
+  if(itemToAnimate.flip){
+    gsap.to(itemToAnimate.card.card.rotation, {
+        y: itemToAnimate.rotation?.y ?? 0,
         duration: 0.1,
         delay: 0.4 + (count * 0.1)
     })
@@ -69,15 +69,8 @@ function toggleCard (count, itemToAnimate) {
   })
 }
 
-function getNumberOfSelectedCards(cards) {
-  let count = 0;
-  cards.forEach(x => {
-    if(x.outline.visible) {
-      count ++;
-    }
-  })
-
-  return count
+function getSelectedCards(cards) {
+  return cards.filter( x => x.outline.visible)
 }
 
 function checkIfCardIsSelected(card) {
@@ -170,4 +163,4 @@ function initGUI (players, camera) {
   cameraFolder.add(camera.position, 'z', 0, 4, 0.0001)
 }
 
-export {getTextureFromSprite, dealerCardAnimation, toggleCard, initTextures, getCardIndexFromDeck, initGUI, getNumberOfSelectedCards, checkIfCardIsSelected, foldCards }
+export {getTextureFromSprite, dealerCardAnimation, toggleCard, initTextures, getCardIndexFromDeck, initGUI, getSelectedCards, checkIfCardIsSelected, foldCards }

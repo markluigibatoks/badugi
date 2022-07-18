@@ -23,6 +23,13 @@ class Card {
     this.outline = outline()
     this.card = createCard(this.item, this.outline)
   }
+
+  changeFrontMaterial(suit, value, textures) {
+    const textureFront = getTexture(suit, value, textures)
+    this.materialFront.map = textureFront
+    this.suit = suit
+    this.value = value
+  }
 }
 
 function createCard (item, outline){

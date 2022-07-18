@@ -1,0 +1,27 @@
+{
+  "player1": {
+    "cards": [
+      {
+        "suit": "spade",
+        "value": "J"
+      },
+      {
+        "suit": "heart",
+        "value": "K"
+      }
+    ],
+    "count": 2
+  },
+  "player2": {
+    "count": 2
+  },
+  "player3": {
+    "count": 2
+  },
+  "player4": {
+    "count": 2
+  },
+  "player5": {
+    "count": 2
+  }
+}

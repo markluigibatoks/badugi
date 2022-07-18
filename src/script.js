@@ -2,11 +2,12 @@ import './style.css'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import playerJson from './player.json'
+import drawCardsJson from './drawcards.json'
 import gameSettings from './gameSettings.json'
 import Player from './player'
 import animate from './animate.js'
 
-import { dealerCardAnimation, toggleCard, initTextures, initGUI, getCardIndexFromDeck, getNumberOfSelectedCards, checkIfCardIsSelected, foldCards } from './helpers'
+import { dealerCardAnimation, toggleCard, initTextures, initGUI, getCardIndexFromDeck, getSelectedCards, checkIfCardIsSelected, foldCards, flipCard } from './helpers'
 
 const textures = initTextures()
 
@@ -111,7 +112,7 @@ window.addEventListener( 'pointermove', onPointerMove )
 
 const raycaster = new THREE.Raycaster();
 
-function onMouseDown(){
+async function onMouseDown(){
     raycaster.setFromCamera( pointer, camera );
     const intersects = raycaster.intersectObjects( objectsToDetect, true );
 
@@ -119,20 +120,132 @@ function onMouseDown(){
 
         const id = intersects[0].object.parent.parent.id
         const index = getCardIndexFromDeck(id, players[0].deck.cards)
-
-        if(!checkIfCardIsSelected(players[0].deck.cards[index]) && getNumberOfSelectedCards(players[0].deck.cards) >= 2){
+        const selectedCards = getSelectedCards(players[0].deck.cards)
+        const itemsToAnimate = []
+        
+        if(!checkIfCardIsSelected(players[0].deck.cards[index]) && selectedCards.length >= 2){
             console.log('Maximum of possible draw card is 2')
+            
+            for(let i = 0; i < selectedCards.length; i ++) {
+                itemsToAnimate.push({
+                    card: selectedCards[i],
+                    rotation: {
+                        y: gameSettings.dealer.rotation.y,
+                        z: gameSettings.dealer.rotation.z
+                    },
+                    x: gameSettings.dealer.position.x,
+                    y: gameSettings.dealer.position.y,
+                    z: gameSettings.dealer.position.z
+                })
+            }
+
+            await animate ({
+                renderer: renderer,
+                scene: scene,
+                camera: camera,
+                animationTime: (Math.log10(selectedCards.length) + (selectedCards.length * 0.05) + 0.4) * 1000,
+                loop: selectedCards.length,
+                itemsToAnimate: itemsToAnimate,
+                foo: (count, itemsToAnimate) => {
+                    dealerCardAnimation(count, itemsToAnimate[count])
+                }
+            })
+
+            players[0].deck.sort()
+            
+            const unselectedCards = players[0].deck.cards.filter( x => {
+                return !x.outline.visible
+            })
+
+            const itemsToSort = []
+
+            for(let i = 0; i < unselectedCards.length; i ++) {
+                const card = unselectedCards[i]
+                const x = gameSettings.cardPosition[0][i].x
+                const y = gameSettings.cardPosition[0][i].y
+                const z = gameSettings.cardPosition[0][i].z
+
+                itemsToSort.push({card: card, x: x, y: y, z: z})
+            }
+
+            await animate ({
+                renderer: renderer,
+                scene: scene,
+                camera: camera,
+                animationTime: (Math.log10(itemsToSort.length) + (itemsToSort.length * 0.05) + 0.4) * 1000,
+                loop: itemsToSort.length,
+                itemsToAnimate: itemsToSort,
+                foo: (count, itemsToAnimate) => {
+                    dealerCardAnimation(count, itemsToAnimate[count])
+                }
+            })
+
+            for(let i = 0; i < selectedCards.length; i ++) {
+                selectedCards[i].changeFrontMaterial(drawCardsJson.player1.cards[i].suit, drawCardsJson.player1.cards[i].value, textures)
+                selectedCards[i].outline.visible = false
+            }
+
+            const itemsToDraw = []
+
+            for(let i = 0; i < selectedCards.length; i ++) {
+                const card = selectedCards[i]
+                const x = gameSettings.cardPosition[0][i+2].x
+                const y = gameSettings.cardPosition[0][i+2].y
+                const z = gameSettings.cardPosition[0][i+2].z
+
+                itemsToDraw.push({card: card, x: x, y: y, z: z})
+            }
+
+            await animate ({
+                renderer: renderer,
+                scene: scene,
+                camera: camera,
+                animationTime: (Math.log10(itemsToDraw.length) + (itemsToDraw.length * 0.05) + 0.4) * 1000,
+                loop: itemsToDraw.length,
+                itemsToAnimate: itemsToDraw,
+                foo: (count, itemsToAnimate) => {
+                    dealerCardAnimation(count, itemsToAnimate[count])
+                }
+            })
+
+            players[0].deck.sort()
+
+            const itemsToSort2 = []
+
+            for(let i = 0; i < players[0].deck.cards.length; i ++) {
+                const card = players[0].deck.cards[i]
+                const x = gameSettings.cardPosition[0][i].x
+                const y = gameSettings.cardPosition[0][i].y
+                const z = gameSettings.cardPosition[0][i].z
+
+                itemsToSort2.push({card: card, x: x, y: y, z: z})
+            }
+
+            await animate ({
+                renderer: renderer,
+                scene: scene,
+                camera: camera,
+                animationTime: (Math.log10(itemsToSort2.length) + (itemsToSort2.length * 0.05) + 0.4) * 1000,
+                loop: itemsToSort2.length,
+                itemsToAnimate: itemsToSort2,
+                foo: (count, itemsToAnimate) => {
+                    dealerCardAnimation(count, itemsToAnimate[count])
+                }
+            })
+
+            selectedCards.clear()
+            unselectedCards.clear()
+
             return
         }
 
-        const itemsToAnimate = []
         itemsToAnimate.push({
             card: players[0].deck.cards[index],
             y: players[0].deck.cards[index].card.position.y === gameSettings.selectedPositionY ? gameSettings.cardPosition[0][index].y : gameSettings.selectedPositionY,
             isOutline: players[0].deck.cards[index].card.position.y !== gameSettings.selectedPositionY
         })
 
-        animate({
+        await animate({
             renderer: renderer,
             scene: scene,
             camera: camera,
@@ -145,7 +258,6 @@ function onMouseDown(){
         })
     }
 }
-
 
 window.addEventListener('mousedown', onMouseDown )
 
@@ -181,14 +293,14 @@ const totalCards = players.length * gameSettings.cardsPerPlayer;
 
 (async () => {
     const itemsToDistribute = []
-
     for(let i = 0, index = 0; i < totalCards;) {
 
-        const card = players[i % players.length].deck.cards[index].card
+        const card = players[i % players.length].deck.cards[index]
         const x = gameSettings.cardPosition[i % players.length][index].x
         const y = gameSettings.cardPosition[i % players.length][index].y
-
-        itemsToDistribute.push({card: card, x: x, y: y})
+        const z = gameSettings.cardPosition[i % players.length][index].z
+        console.log(z)
+        itemsToDistribute.push({card: card, x: x, y: y, z: z, flip: i % players.length === 0})
 
         i ++
         if(i % players.length === 0) {
@@ -213,11 +325,12 @@ const totalCards = players.length * gameSettings.cardsPerPlayer;
     const itemsToSort = []
 
     for(let i = 0; i < gameSettings.cardsPerPlayer; i ++) {
-        const card = players[0].deck.cards[i].card
+        const card = players[0].deck.cards[i]
         const x = gameSettings.cardPosition[0][i].x
         const y = gameSettings.cardPosition[0][i].y
+        const z = gameSettings.cardPosition[0][i].z
 
-        itemsToSort.push({card: card, x: x, y: y})
+        itemsToSort.push({card: card, x: x, y: y, z: z})
     }
 
     await animate ({
