@@ -18,6 +18,12 @@
         { "x": -3, "y": 2 },
         { "x": 3, "y": 2 }
     ],
+    "cardDefaultSize": {
+        "width": 0.7,
+        "height": 0.9,
+        "widthSegments": 1,
+        "heightSegments": 1
+    },
     "cardPosition": [
         [
             { "x": 0, "y": 0 },

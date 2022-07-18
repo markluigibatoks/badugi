@@ -58,7 +58,7 @@ function dealerCardAnimation (count, itemToAnimate) {
 }
 
 function toggleCard (count, itemToAnimate) {
-  gsap.to(itemToAnimate.card.mesh.position, {
+  gsap.to(itemToAnimate.card.card.position, {
       y: itemToAnimate.y,
       duration: 0.5
   })
@@ -129,8 +129,8 @@ function initTextures () {
 }
 
 function foldCards(count, itemToAnimate) {
-  itemToAnimate.card.children[0].children[1].material.color = new THREE.Color(0x666666)
-  gsap.to(itemToAnimate.card.position, {
+  itemToAnimate.card[count].materialBack.color = new THREE.Color(0x666666)
+  gsap.to(itemToAnimate.card[count].card.position, {
     x: itemToAnimate.x,
     duration: 0.1
   })
@@ -140,7 +140,7 @@ function getCardIndexFromDeck (id, cards) {
   let index = 0
 
   for(let i = 0; i < cards.length; i ++) {
-      if(id === cards[i].mesh.id) {
+      if(id === cards[i].card.id) {
           index = i
           break;
       }

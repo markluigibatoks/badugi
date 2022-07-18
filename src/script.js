@@ -50,7 +50,7 @@ players.forEach( (x, index) => {
     player.add(x.image)
 
     x.deck.cards.forEach(y => {
-        scene.add(y.mesh)
+        scene.add(y.card)
     })
     
     scene.add(player)
@@ -128,8 +128,8 @@ function onMouseDown(){
         const itemsToAnimate = []
         itemsToAnimate.push({
             card: players[0].deck.cards[index],
-            y: players[0].deck.cards[index].mesh.position.y === gameSettings.selectedPositionY ? gameSettings.cardPosition[0][index].y : gameSettings.selectedPositionY,
-            isOutline: players[0].deck.cards[index].mesh.position.y !== gameSettings.selectedPositionY
+            y: players[0].deck.cards[index].card.position.y === gameSettings.selectedPositionY ? gameSettings.cardPosition[0][index].y : gameSettings.selectedPositionY,
+            isOutline: players[0].deck.cards[index].card.position.y !== gameSettings.selectedPositionY
         })
 
         animate({
@@ -184,7 +184,7 @@ const totalCards = players.length * gameSettings.cardsPerPlayer;
 
     for(let i = 0, index = 0; i < totalCards;) {
 
-        const card = players[i % players.length].deck.cards[index].mesh
+        const card = players[i % players.length].deck.cards[index].card
         const x = gameSettings.cardPosition[i % players.length][index].x
         const y = gameSettings.cardPosition[i % players.length][index].y
 
@@ -213,7 +213,7 @@ const totalCards = players.length * gameSettings.cardsPerPlayer;
     const itemsToSort = []
 
     for(let i = 0; i < gameSettings.cardsPerPlayer; i ++) {
-        const card = players[0].deck.cards[i].mesh
+        const card = players[0].deck.cards[i].card
         const x = gameSettings.cardPosition[0][i].x
         const y = gameSettings.cardPosition[0][i].y
 
@@ -234,7 +234,7 @@ const totalCards = players.length * gameSettings.cardsPerPlayer;
 
     const itemsToFold = []
     for(let i = 0; i < gameSettings.cardsPerPlayer; i ++) {
-        const card = players[1].deck.cards[i].mesh
+        const card = players[1].deck.cards
         const x = gameSettings.foldPosition[1][i].x
 
         itemsToFold.push({ card: card, x: x })

@@ -16,9 +16,12 @@ class Card {
   constructor (suit = 'joker', value = 'joker', textures) {
     this.suit = suit
     this.value = value
-    this.item = item(suit, value, textures)
+    this.materialFront = new THREE.MeshStandardMaterial({color: 0xffffff, side: THREE.FrontSide})
+    this.materialBack = new THREE.MeshStandardMaterial({color: 0xffffff, side: THREE.BackSide})
+    // Item is use to pass in Objects to Detect
+    this.item = item(suit, value, textures, this.materialFront, this.materialBack)
     this.outline = outline()
-    this.mesh = createCard(this.item, this.outline)
+    this.card = createCard(this.item, this.outline)
   }
 }
 
@@ -30,29 +33,29 @@ function createCard (item, outline){
   return card
 }
 
-function item (suit, value, textures) {
+function item (suit, value, textures, materialFront, materialBack) {
   // Objects
-  const geometryFront = new THREE.PlaneGeometry( 0.7, 0.9, 1, 1 )
-  const geometryBack = new THREE.PlaneGeometry( 0.7, 0.9, 1, 1 )
+  const geometryFront = new THREE.PlaneGeometry( gameSettings.cardDefaultSize.width, gameSettings.cardDefaultSize.height, gameSettings.cardDefaultSize.widthDegments, gameSettings.cardDefaultSize.heightSegments )
+  const geometryBack = new THREE.PlaneGeometry( gameSettings.cardDefaultSize.width, gameSettings.cardDefaultSize.height, gameSettings.cardDefaultSize.widthDegments, gameSettings.cardDefaultSize.heightSegments )
 
   // // Materials
   const textureBack = textures.cardFold
   const textureFront = getTexture(suit, value, textures)
 
-  const materialBack = new THREE.MeshStandardMaterial({map: textureBack, color: 0xffffff, side: THREE.BackSide})
-  const materialFront = new THREE.MeshStandardMaterial({map: textureFront, color: 0xffffff, side: THREE.FrontSide})
+  materialBack.map = textureBack
+  materialFront.map = textureFront
 
-  const card = new THREE.Group()
+  const group = new THREE.Group()
 
   // Mesh
   const mesh1 = new THREE.Mesh( geometryFront, materialFront )
   mesh1.name = `${value} of ${suit}s`
-  card.add( mesh1 )
+  group.add( mesh1 )
   const mesh2 = new THREE.Mesh( geometryBack, materialBack )
   mesh2.name = 'materialBack'
-  card.add( mesh2 )
-  card.name = 'content'
-  return card
+  group.add( mesh2 )
+  group.name = 'content'
+  return group
 }
 
 function outline () {

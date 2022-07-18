@@ -11,11 +11,11 @@ export default class Player {
 
     this.deck.cards = this.deck.cards.map((card) => {
 
-      card.mesh.position.x = gameSettings.dealer.position.x
-      card.mesh.position.y = gameSettings.dealer.position.y
+      card.card.position.x = gameSettings.dealer.position.x
+      card.card.position.y = gameSettings.dealer.position.y
 
-      card.mesh.rotation.y = gameSettings.dealer.rotation.y
-      card.mesh.rotation.z = gameSettings.dealer.rotation.z
+      card.card.rotation.y = gameSettings.dealer.rotation.y
+      card.card.rotation.z = gameSettings.dealer.rotation.z
 
       return card
     })
