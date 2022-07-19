@@ -7,7 +7,7 @@ import gameSettings from './gameSettings.json'
 import Player from './player'
 import animate from './animate.js'
 
-import { dealerCardAnimation, toggleCard, initTextures, initGUI, getCardIndexFromDeck, getSelectedCards, checkIfCardIsSelected, foldCards, flipCard } from './helpers'
+import { dealerCardAnimation, toggleCard, initTextures, initGUI, getCardIndexFromDeck, getSelectedCards, checkIfCardIsSelected, foldCards, getCanvasSize } from './helpers'
 
 const textures = initTextures()
 
@@ -101,23 +101,17 @@ players.forEach( (x, index) => {
 /**
  * Sizes
  */
-const sizes = {
-    width: window.innerWidth,
-    height: window.innerHeight
-}
+const sizes = Object.assign({width: 960, height: 540}, getCanvasSize(window.innerWidth, window.innerHeight))
 
 const clock = new THREE.Clock()
 
 window.addEventListener('resize', () =>
 {
     // Update sizes
-    sizes.width = window.innerWidth
-    sizes.height = window.innerHeight
-
+    Object.assign(sizes, getCanvasSize(window.innerWidth, window.innerHeight))
+    console.log(sizes)
     // Update camera
-    camera.aspect = sizes.width / sizes.height
-    camera.fov = 65;
-    camera.position.z = 3
+    camera.aspect = 16 / 9
     camera.updateProjectionMatrix()
 
     // Update renderer
@@ -302,7 +296,7 @@ scene.add( light );
  * Camera
  */
 // Base camera
-const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
+const camera = new THREE.PerspectiveCamera(75, 16/9, 0.1, 100)
 camera.position.x = gameSettings.cameraPosition.x
 camera.position.y = gameSettings.cameraPosition.y
 camera.position.z = gameSettings.cameraPosition.z

@@ -142,6 +142,25 @@ function getCardIndexFromDeck (id, cards) {
   return index
 }
 
+function getCanvasSize(swidth, sheight) {
+  const dwidth = 960
+  const dheight = 540
+
+  let new_width, new_height
+  
+  if (dwidth / dheight > swidth / sheight) {
+    new_width = swidth;
+    new_height = Math.trunc(Math.floor(dheight
+                                  * swidth / dwidth))
+  } else {
+      new_height = sheight;
+      new_width = Math.trunc(Math.floor(dwidth
+                                  * sheight / dheight))
+  }
+
+  return {width: new_width, height: new_height}
+}
+
 function initGUI (players, camera) {
   const gui = new dat.GUI()
 
@@ -163,4 +182,4 @@ function initGUI (players, camera) {
   cameraFolder.add(camera.position, 'z', 0, 4, 0.0001)
 }
 
-export {getTextureFromSprite, dealerCardAnimation, toggleCard, initTextures, getCardIndexFromDeck, initGUI, getSelectedCards, checkIfCardIsSelected, foldCards }
+export {getTextureFromSprite, dealerCardAnimation, toggleCard, initTextures, getCardIndexFromDeck, initGUI, getSelectedCards, checkIfCardIsSelected, foldCards, getCanvasSize }
