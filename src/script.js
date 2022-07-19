@@ -55,8 +55,8 @@ players.forEach( (x, index) => {
     })
     
     scene.add(player)
-    player.position.x = gameSettings.playerPosition[index].x
-    player.position.y = gameSettings.playerPosition[index].y
+    player.position.x = gameSettings.userPosition[index].x
+    player.position.y = gameSettings.userPosition[index].y
 })
 
 
