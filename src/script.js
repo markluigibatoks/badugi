@@ -20,6 +20,44 @@ const scene = new THREE.Scene()
 scene.background = new THREE.Color(0x005B13)
 
 
+const loader = new THREE.FontLoader();
+				loader.load( 'fonts/Roboto_Regular.json', function ( font ) {
+
+					const color = 0xffff;
+
+					const matDark = new THREE.LineBasicMaterial( {
+						color: color,
+						side: THREE.DoubleSide
+					} );
+
+					const matLite = new THREE.MeshBasicMaterial( {
+						color: color,
+						transparent: true,
+						opacity: 0.4,
+						side: THREE.DoubleSide,
+
+					} );
+
+					const message = 'Hi';
+
+					const shapes = font.generateShapes( message, 0.5 );
+
+					const geometry = new THREE.ShapeGeometry( shapes );
+
+					geometry.computeBoundingBox();
+
+					const xMid = - 0.5 * ( geometry.boundingBox.max.x - geometry.boundingBox.min.x );
+
+					geometry.translate( xMid, 0, 0 );
+
+					const text = new THREE.Mesh( geometry, matLite );
+					text.position.z = 0;
+                    text.position.y = 1
+					scene.add( text );
+
+
+				} ); 
+
 // Objects
 const players = []
 const objectsToDetect = []
@@ -72,7 +110,6 @@ const clock = new THREE.Clock()
 
 window.addEventListener('resize', () =>
 {
-    
     // Update sizes
     sizes.width = window.innerWidth
     sizes.height = window.innerHeight
